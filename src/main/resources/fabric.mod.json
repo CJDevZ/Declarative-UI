@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "declarative_ui",
+  "version": "${version}",
+  "name": "Declarative UI",
+  "description": "Data-driven UI, fully server-side.",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/declarative_ui/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "eu.cj4.declarativeui.impl.DeclarativeUI"
+    ]
+  },
+  "mixins": [
+    "declarative_ui.mixins.json"
+  ],
+  "accessWidener": "declarative_ui.accesswidener",
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
