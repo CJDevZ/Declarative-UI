@@ -9,6 +9,6 @@ import java.util.Map;
 
 @Mixin(CommandContext.class)
 public interface CommandContextAccessor<S> {
-    @Accessor("arguments")
-    Map<String, ParsedArgument<S, ?>> arguments();
+    @Accessor
+    Map<String, ParsedArgument<S, ?>> getArguments();
 }

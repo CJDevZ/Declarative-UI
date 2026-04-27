@@ -46,7 +46,7 @@ public record DeclaredCommand(Optional<ResourceLocation> function, List<Node> no
             CommandContext<CommandSourceStack> commandContext = contextChain.getTopContext().copyFor(sourceStack);
             Optional<CommandFunction<CommandSourceStack>> function = sourceStack.getServer().getFunctions().get(this.function);
             if (function.isPresent()) {
-                var arguments = ((CommandContextAccessor<CommandSourceStack>) commandContext).arguments();
+                var arguments = ((CommandContextAccessor<CommandSourceStack>) commandContext).getArguments();
                 CompoundTag compoundTag = null;
                 if (!arguments.isEmpty()) {
                     compoundTag = new CompoundTag();
@@ -65,7 +65,7 @@ public record DeclaredCommand(Optional<ResourceLocation> function, List<Node> no
     public interface Node {
         Codec<Node> CODEC = Codec.either(DeclaredArgumentNode.CODEC, DeclaredLiteralNode.CODEC).xmap(Either::unwrap, declaredNode -> declaredNode instanceof DeclaredLiteralNode node ? Either.right(node) : Either.left((DeclaredArgumentNode) declaredNode));
 
-        <T extends ArgumentBuilder<CommandSourceStack, T>> ArgumentBuilder<CommandSourceStack, T> register(CommandBuildContext buildContext);
+        <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext);
         String name();
         Optional<ResourceLocation> function();
         List<Node> nodes();
@@ -83,8 +83,8 @@ public record DeclaredCommand(Optional<ResourceLocation> function, List<Node> no
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T extends ArgumentBuilder<CommandSourceStack, T>> ArgumentBuilder<CommandSourceStack, T> register(CommandBuildContext buildContext) {
-            return (ArgumentBuilder<CommandSourceStack, T>) Commands.literal(this.name);
+        public <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext) {
+            return (T) Commands.literal(this.name);
         }
     }
 
@@ -101,8 +101,8 @@ public record DeclaredCommand(Optional<ResourceLocation> function, List<Node> no
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T extends ArgumentBuilder<CommandSourceStack, T>> ArgumentBuilder<CommandSourceStack, T> register(CommandBuildContext buildContext) {
-            return (ArgumentBuilder<CommandSourceStack, T>) Commands.argument(this.name, this.argumentProvider.apply(buildContext));
+        public <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext) {
+            return (T) Commands.argument(this.name, this.argumentProvider.apply(buildContext));
         }
     }
 }

@@ -5,13 +5,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.slot.ClickEvent;
 import eu.cj4.declarativeui.api.providers.DeclaredContainerProvider;
-import eu.cj4.declarativeui.impl.DeclarativeUI;
-import eu.cj4.declarativeui.impl.LockableSlot;
+import eu.cj4.declarativeui.api.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.api.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.api.menu.slot.DeclaredSlot;
+import eu.cj4.declarativeui.impl.LockedSlot;
 import eu.pb4.sgui.api.ClickType;
+import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
+import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
@@ -26,9 +28,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +48,7 @@ public record DeclaredMenu(Optional<Component> title, Holder<MenuType<?>> menuTy
             ).apply(instance, DeclaredMenu::new));
 
     public Component getDefaultTitle(RegistryAccess access) {
-        Registry<DeclaredMenu> MENU_REGISTRY = access.lookupOrThrow(DeclarativeUI.UI_REGISTRY);
+        Registry<DeclaredMenu> MENU_REGISTRY = access.lookupOrThrow(DeclarativeUIRegistries.MENU_REGISTRY);
         ResourceLocation guiId = MENU_REGISTRY.getKey(this);
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }
@@ -56,38 +59,49 @@ public record DeclaredMenu(Optional<Component> title, Holder<MenuType<?>> menuTy
 
         builder.setTitle(ComponentUtils.updateForEntity(sourceStack, title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0));
 
-        for (DeclaredSlot declaredSlot : slots) {
-            ItemStack stack = declaredSlot.getItemStack(sourceStack);
-            if (declaredSlot.clickEvent().isEmpty()) {
-                builder.setSlot(declaredSlot.slot(), stack);
+        for (DeclaredSlot declaredSlot : this.slots) {
+            if (declaredSlot.clickEvents().isEmpty()) {
+                builder.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, GuiElementInterface.EMPTY_CALLBACK));
             } else {
-                builder.setSlot(declaredSlot.slot(), stack, (i, clickType, clickType1, slotGuiInterface) -> {
-                    for (ClickEvent clickEvent : declaredSlot.clickEvent()) {
-                        Optional<ClickType> clickType2 = clickEvent.clickType();
-                        if (clickType2.isEmpty() || clickType2.get() == clickType) {
-                            clickEvent.click(this, slotGuiInterface);
-                        }
-                    }
-                });
+                builder.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, new DeclaredSlotCallback(this, declaredSlot.clickEvents())));
+            }
+        }
+
+        for (DeclaredContainerProvider declaredContainer : this.containers) {
+            boolean viewOnly = declaredContainer.viewOnly();
+            Container container = declaredContainer.provider().getContainer(sourceStack.getEntity());
+            if (container == null) continue;
+            for (DeclaredRedirect redirect : declaredContainer.redirects()) {
+                builder.setSlotRedirect(redirect.slot(), redirect.viewOnly().orElse(viewOnly)
+                        ? new LockedSlot(container, redirect.containerSlot(), 0, 0)
+                        : new Slot(container, redirect.containerSlot(), 0, 0)
+                );
             }
         }
 
         return builder;
     }
 
-    public void open(CommandSourceStack sourceStack, ServerPlayer target) throws CommandSyntaxException {
-        SimpleGui gui = instantiate(sourceStack).build(target);
+    protected record DeclaredSlotCallback(DeclaredMenu declaredMenu, List<ClickEvent> clickEvents) implements GuiElementInterface.ClickCallback {
 
-        for (DeclaredContainerProvider declaredContainer : this.containers()) {
-            boolean viewOnly = declaredContainer.viewOnly();
-            Container container = declaredContainer.getContainer(target);
-            if (container == null) continue;
-            for (DeclaredRedirect redirect : declaredContainer.redirects()) {
-                gui.setSlotRedirect(redirect.slot(), new LockableSlot(container, redirect.containerSlot(), 0, 0, redirect.viewOnly().orElse(viewOnly)));
+        @Override
+        public void click(int i, ClickType clickType, net.minecraft.world.inventory.ClickType actionType, SlotGuiInterface slotGuiInterface) {
+            for (ClickEvent clickEvent : this.clickEvents) {
+                Optional<ClickType> clickType2 = clickEvent.clickType();
+                Optional<net.minecraft.world.inventory.ClickType> actionType2 = clickEvent.actionType();
+                if ((clickType2.isEmpty() || clickType2.get() == clickType) && (actionType2.isEmpty() || actionType2.get() == actionType)) {
+                    clickEvent.click(this.declaredMenu, slotGuiInterface);
+                }
             }
         }
+    }
 
-        gui.setLockPlayerInventory(this.lockPlayerInventory());
-        gui.open();
+    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        SimpleGuiBuilder builder = instantiate(sourceStack);
+        for (ServerPlayer target : targets) {
+            SimpleGui gui = builder.build(target);
+            gui.setLockPlayerInventory(this.lockPlayerInventory());
+            gui.open();
+        }
     }
 }

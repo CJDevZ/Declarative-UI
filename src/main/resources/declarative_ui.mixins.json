@@ -4,9 +4,9 @@
   "package": "eu.cj4.declarativeui.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ClickTypeMixin",
     "CommandContextAccessor",
-    "MinecraftServerMixin",
+    "ItemCommandsAccessor",
+    "ResourceKeyArgumentAccessor",
     "ServerPlayerMixin"
   ],
   "client": [
