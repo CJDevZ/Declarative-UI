@@ -19,18 +19,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
-public record ClickEvent(Optional<ResourceLocation> function, ClickAction action, Optional<ClickType> clickType) {
+public record ClickEvent(Optional<ResourceLocation> function, ClickAction action, Optional<ClickType> clickType, Optional<net.minecraft.world.inventory.ClickType> actionType) {
     private static final Codec<ClickType> CLICK_TYPE_CODEC = new StandardEnumCodec<>(ClickType.values(), StringRepresentable.createNameLookup(ClickType.values(), clickType1 -> clickType1.name().toLowerCase(Locale.ROOT)), Enum::ordinal);
+    private static final Codec<net.minecraft.world.inventory.ClickType> ACTION_TYPE_CODEC = new StandardEnumCodec<>(net.minecraft.world.inventory.ClickType.values(), StringRepresentable.createNameLookup(net.minecraft.world.inventory.ClickType.values(), clickType1 -> clickType1.name().toLowerCase(Locale.ROOT)), Enum::ordinal);
     public static final Codec<ClickEvent> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ResourceLocation.CODEC.optionalFieldOf("function").forGetter(ClickEvent::function),
                     ClickAction.CODEC.optionalFieldOf("action", ClickAction.NONE).forGetter(ClickEvent::action),
-                    CLICK_TYPE_CODEC.optionalFieldOf("click_type").forGetter(ClickEvent::clickType)
+                    CLICK_TYPE_CODEC.optionalFieldOf("click_type").forGetter(ClickEvent::clickType),
+                    ACTION_TYPE_CODEC.optionalFieldOf("action_type").forGetter(ClickEvent::actionType)
             ).apply(instance, ClickEvent::new));
 
     public void click(DeclaredMenu menu, SlotGuiInterface slotGuiInterface) {
@@ -45,7 +48,7 @@ public record ClickEvent(Optional<ResourceLocation> function, ClickAction action
                 ServerPlayer player = slotGuiInterface.getPlayer();
                 try {
                     CommandSourceStack commandSourceStack = player.createCommandSourceStack().withSuppressedOutput().withPermission(Commands.LEVEL_GAMEMASTERS);
-                    menu.open(commandSourceStack, player);
+                    menu.open(commandSourceStack, Collections.singleton(player));
                 } catch (CommandSyntaxException e) {
                     throw new RuntimeException(e);
                 }

@@ -3,7 +3,7 @@ package eu.cj4.declarativeui.mixin;
 import com.mojang.authlib.GameProfile;
 import eu.cj4.declarativeui.api.NamespacedContainerHolder;
 import eu.cj4.declarativeui.api.container.DeclaredContainer;
-import eu.cj4.declarativeui.impl.DeclarativeUI;
+import eu.cj4.declarativeui.api.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.container.PlayerContainer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -44,7 +44,7 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     @Unique
     @Override
     public Container declarative_ui$namespacedContainer(ResourceKey<DeclaredContainer> resourceKey) {
-        DeclaredContainer declaredContainer = this.registryAccess().lookupOrThrow(DeclarativeUI.CONTAINER_REGISTRY).getValue(resourceKey);
+        DeclaredContainer declaredContainer = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER_REGISTRY).getValue(resourceKey);
         if (declaredContainer == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void loadContainers(ValueInput valueInput, CallbackInfo ci) {
         ValueInput containers = valueInput.childOrEmpty("declarative_ui_containers");
-        Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUI.CONTAINER_REGISTRY);
+        Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER_REGISTRY);
         for (Map.Entry<ResourceKey<DeclaredContainer>, DeclaredContainer> entry : containerRegistry.entrySet()) {
             Optional<ValueInput.TypedInputList<ItemStackWithSlot>> slots = containers.list(entry.getKey().location().toString(), ItemStackWithSlot.CODEC);
             if (slots.isEmpty()) continue;

@@ -1,10 +1,10 @@
 package eu.cj4.declarativeui.api.providers;
 
-import eu.cj4.declarativeui.api.NamespacedContainerHolder;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
 
 public interface ContainerProvider {
     ContainerProviderType getType();
 
-    NamespacedContainerHolder getNamespacedContainerHolder(ServerPlayer serverPlayer);
+    Container getContainer(Entity entity);
 }
