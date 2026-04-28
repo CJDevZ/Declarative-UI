@@ -6,12 +6,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
 import eu.cj4.declarativeui.api.command.DeclaredCommand;
-import eu.cj4.declarativeui.api.command.ItemCommands;
+import eu.cj4.declarativeui.impl.command.ItemCommands;
 import eu.cj4.declarativeui.api.container.DeclaredContainer;
 import eu.cj4.declarativeui.api.registry.DeclarativeUIBuiltInRegistries;
 import eu.cj4.declarativeui.api.menu.DeclaredMenu;
 import eu.cj4.declarativeui.api.registry.DeclarativeUIRegistries;
-import eu.cj4.declarativeui.impl.providers.CommandArgumentProviders;
+import eu.cj4.declarativeui.api.providers.CommandArgumentProviders;
 import eu.cj4.declarativeui.impl.providers.ContainerProviders;
 import eu.cj4.declarativeui.impl.providers.SlotProviders;
 import net.fabricmc.api.ModInitializer;
@@ -85,7 +85,6 @@ public class DeclarativeUI implements ModInitializer {
             argumentBuilder.requires(source -> source.hasPermission(permissionLevel));
         }
         if (functionResource != null) {
-            System.out.println(argumentBuilder.build().getName());
             argumentBuilder.executes(new DeclaredCommand.CommandFunctionExecutor(functionResource));
         }
         for (DeclaredCommand.Node node : nodes) {

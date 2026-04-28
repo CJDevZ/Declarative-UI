@@ -7,7 +7,12 @@
     "CommandContextAccessor",
     "ItemCommandsAccessor",
     "ResourceKeyArgumentAccessor",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "argument.ArgumentTypeInfosAccessor",
+    "argument.EntityArgumentAccessor",
+    "argument.ScoreHolderArgumentAccessor",
+    "argument.StringArgumentTypeAccessor",
+    "argument.TimeArgumentAccessor"
   ],
   "client": [
   ],
