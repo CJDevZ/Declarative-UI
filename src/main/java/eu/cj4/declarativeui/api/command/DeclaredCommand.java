@@ -1,15 +1,14 @@
 package eu.cj4.declarativeui.api.command;
 
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ContextChain;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.providers.CommandArgumentProvider;
-import eu.cj4.declarativeui.impl.providers.CommandArgumentProviders;
+import eu.cj4.declarativeui.api.providers.CommandArgumentProviders;
 import eu.cj4.declarativeui.mixin.CommandContextAccessor;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -62,47 +61,23 @@ public record DeclaredCommand(Optional<ResourceLocation> function, List<Node> no
         }
     }
 
-    public interface Node {
-        Codec<Node> CODEC = Codec.either(DeclaredArgumentNode.CODEC, DeclaredLiteralNode.CODEC).xmap(Either::unwrap, declaredNode -> declaredNode instanceof DeclaredLiteralNode node ? Either.right(node) : Either.left((DeclaredArgumentNode) declaredNode));
-
-        <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext);
-        String name();
-        Optional<ResourceLocation> function();
-        List<Node> nodes();
-        Optional<Integer> permissionLevel();
-    }
-
-    public record DeclaredLiteralNode(String name, Optional<ResourceLocation> function, List<Node> nodes, Optional<Integer> permissionLevel) implements Node {
-        public static final Codec<DeclaredLiteralNode> CODEC = RecordCodecBuilder.create(instance ->
+    public record Node(String name, Optional<ArgumentType<?>> argumentType, Optional<ResourceLocation> function, List<Node> nodes, Optional<Integer> permissionLevel) {
+        public static final Codec<Node> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        Codec.STRING.fieldOf("name").forGetter(DeclaredLiteralNode::name),
-                        ResourceLocation.CODEC.optionalFieldOf("function").forGetter(DeclaredLiteralNode::function),
-                        Codec.list(Node.CODEC).optionalFieldOf("nodes", Collections.emptyList()).forGetter(DeclaredLiteralNode::nodes),
-                        Codec.INT.optionalFieldOf("permission_level").forGetter(DeclaredLiteralNode::permissionLevel)
-                ).apply(instance, DeclaredLiteralNode::new));
+                        Codec.STRING.fieldOf("name").forGetter(Node::name),
+                        CommandArgumentProviders.TYPED_CODEC.optionalFieldOf("argument").forGetter(Node::argumentType),
+                        ResourceLocation.CODEC.optionalFieldOf("function").forGetter(Node::function),
+                        Codec.list(Node.CODEC).optionalFieldOf("nodes", Collections.emptyList()).forGetter(Node::nodes),
+                        Codec.INT.optionalFieldOf("permission_level").forGetter(Node::permissionLevel)
+                ).apply(instance, Node::new));
 
-        @Override
         @SuppressWarnings("unchecked")
         public <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext) {
-            return (T) Commands.literal(this.name);
-        }
-    }
-
-    public record DeclaredArgumentNode(CommandArgumentProvider argumentProvider, String name, Optional<ResourceLocation> function, List<Node> nodes, Optional<Integer> permissionLevel) implements Node {
-        public static final Codec<DeclaredArgumentNode> CODEC = RecordCodecBuilder.create(instance ->
-                instance.group(
-                        CommandArgumentProviders.TYPED_CODEC.fieldOf("argument_type").forGetter(DeclaredArgumentNode::argumentProvider),
-                        Codec.STRING.fieldOf("name").forGetter(DeclaredArgumentNode::name),
-                        ResourceLocation.CODEC.optionalFieldOf("function").forGetter(DeclaredArgumentNode::function),
-                        Codec.list(Node.CODEC).optionalFieldOf("nodes", Collections.emptyList()).forGetter(DeclaredArgumentNode::nodes),
-                        Codec.INT.optionalFieldOf("permission_level").forGetter(DeclaredArgumentNode::permissionLevel)
-                ).apply(instance, DeclaredArgumentNode::new));
-
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext) {
-            return (T) Commands.argument(this.name, this.argumentProvider.apply(buildContext));
+            if (argumentType.isPresent()) {
+                return (T) Commands.argument(this.name, this.argumentType.get());
+            } else {
+                return (T) Commands.literal(this.name);
+            }
         }
     }
 }
