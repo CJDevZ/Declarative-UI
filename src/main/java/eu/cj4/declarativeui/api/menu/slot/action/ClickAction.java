@@ -1,10 +1,12 @@
 package eu.cj4.declarativeui.api.menu.slot.action;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
-import eu.cj4.declarativeui.impl.command.action.FunctionAction;
-import eu.cj4.declarativeui.impl.command.action.OpenMenuAction;
+import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
+import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
 import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
+import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -12,12 +14,14 @@ import net.minecraft.resources.ResourceLocation;
 public interface ClickAction {
     ClickActionType getType();
 
-    static FunctionAction function(ResourceLocation functionId) {
-        return new FunctionAction(functionId);
+    void click(DeclaredMenu menu, SlotGuiInterface slotGui) throws CommandSyntaxException;
+
+    static FunctionCommandAction function(ResourceLocation functionId) {
+        return new FunctionCommandAction(functionId);
     }
 
-    static OpenMenuAction openMenu(ResourceKey<DeclaredMenu> menu) {
-        return new OpenMenuAction(menu);
+    static OpenMenuCommandAction openMenu(ResourceKey<DeclaredMenu> menu) {
+        return new OpenMenuCommandAction(menu);
     }
     
     static ClickActionType register(ResourceLocation id, MapCodec<? extends ClickAction> mapCodec) {
