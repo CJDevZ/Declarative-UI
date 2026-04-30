@@ -1,5 +1,6 @@
 package eu.cj4.declarativeui.impl.registry;
 
+import eu.cj4.declarativeui.api.command.argument.CommandArgumentType;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
 import eu.cj4.declarativeui.impl.command.DeclaredCommand;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;

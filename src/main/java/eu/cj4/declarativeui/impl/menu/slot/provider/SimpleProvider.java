@@ -9,6 +9,8 @@ import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +28,7 @@ import java.util.Optional;
 public record SimpleProvider(ItemStack item, Optional<LootItemFunction> itemModifier) implements SlotProvider {
     public static final MapCodec<SimpleProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.withAlternative(ItemStack.STRICT_CODEC, Item.CODEC, ItemStack::new).optionalFieldOf("item", ItemStack.EMPTY).forGetter(SimpleProvider::item),
-            Codec.withAlternative(LootItemFunctions.ROOT_CODEC, FunctionReference.CODEC.codec()).optionalFieldOf("item_modifier").forGetter(SimpleProvider::itemModifier)
+            Codec.withAlternative(LootItemFunctions.ROOT_CODEC, ResourceKey.codec(Registries.ITEM_MODIFIER), resourceKey -> FunctionReference.functionReference(resourceKey).build()).optionalFieldOf("item_modifier").forGetter(SimpleProvider::itemModifier)
     ).apply(instance, SimpleProvider::new));
 
     @Override

@@ -9,7 +9,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public record EnderChestProvider() implements ContainerProvider {
-    public static final MapCodec<EnderChestProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.stable(new EnderChestProvider()));
+    public static final MapCodec<EnderChestProvider> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new EnderChestProvider()));
 
     @Override
     public ContainerProviderType getType() {

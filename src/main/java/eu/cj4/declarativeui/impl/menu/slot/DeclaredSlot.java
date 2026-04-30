@@ -1,5 +1,7 @@
 package eu.cj4.declarativeui.impl.menu.slot;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
@@ -9,6 +11,7 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
+import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +35,7 @@ public record DeclaredSlot(int slot, SlotProvider provider, List<ClickEvent> cli
     }
 
     protected record SlotCallback(DeclaredMenu declaredMenu, List<ClickEvent> clickEvents) implements GuiElementInterface.ClickCallback {
+        private static final Logger LOGGER = LogUtils.getLogger();
 
         @Override
         public void click(int i, ClickType clickType, net.minecraft.world.inventory.ClickType actionType, SlotGuiInterface slotGuiInterface) {
@@ -39,7 +43,11 @@ public record DeclaredSlot(int slot, SlotProvider provider, List<ClickEvent> cli
                 Optional<ClickType> clickType2 = clickEvent.clickType();
                 Optional<net.minecraft.world.inventory.ClickType> actionType2 = clickEvent.actionType();
                 if ((clickType2.isEmpty() || clickType2.get() == clickType) && (actionType2.isEmpty() || actionType2.get() == actionType)) {
-                    clickEvent.click(this.declaredMenu, slotGuiInterface);
+                    try {
+                        clickEvent.click(this.declaredMenu, slotGuiInterface);
+                    } catch (CommandSyntaxException e) {
+                        LOGGER.warn("Failed to process Click", e);
+                    }
                 }
             }
         }

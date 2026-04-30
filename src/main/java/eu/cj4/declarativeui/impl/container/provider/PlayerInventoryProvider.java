@@ -9,7 +9,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public record PlayerInventoryProvider() implements ContainerProvider {
-    public static final MapCodec<PlayerInventoryProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.stable(new PlayerInventoryProvider()));
+    public static final MapCodec<PlayerInventoryProvider> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new PlayerInventoryProvider()));
 
     @Override
     public ContainerProviderType getType() {

@@ -14,8 +14,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collections;
 
-public record OpenMenuAction(ResourceKey<DeclaredMenu> menu) implements CommandAction {
-    public static final MapCodec<OpenMenuAction> CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU_REGISTRY).fieldOf("menu").xmap(OpenMenuAction::new, OpenMenuAction::menu);
+public record OpenMenuCommandAction(ResourceKey<DeclaredMenu> menu) implements CommandAction {
+    public static final MapCodec<OpenMenuCommandAction> CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU_REGISTRY).fieldOf("menu").xmap(OpenMenuCommandAction::new, OpenMenuCommandAction::menu);
 
     @Override
     public CommandActionType getType() {

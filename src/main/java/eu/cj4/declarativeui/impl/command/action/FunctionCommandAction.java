@@ -21,12 +21,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-public class FunctionAction extends CustomCommandExecutor.WithErrorHandling<CommandSourceStack> implements CustomCommandExecutor.CommandAdapter<CommandSourceStack>, CommandAction {
-    public static final MapCodec<FunctionAction> CODEC = ResourceLocation.CODEC.fieldOf("function").xmap(FunctionAction::new, FunctionAction::function);
+public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandling<CommandSourceStack> implements CustomCommandExecutor.CommandAdapter<CommandSourceStack>, CommandAction {
+    public static final MapCodec<FunctionCommandAction> CODEC = ResourceLocation.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
 
     private final ResourceLocation function;
 
-    public FunctionAction(ResourceLocation function) {
+    public FunctionCommandAction(ResourceLocation function) {
         this.function = function;
     }
 
