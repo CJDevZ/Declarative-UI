@@ -2,8 +2,12 @@ package eu.cj4.declarativeui.impl.menu;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import eu.cj4.declarativeui.api.menu.Menu;
+import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.impl.menu.container.provider.DeclaredContainerProvider;
+import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
@@ -32,19 +36,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public record DeclaredMenu(Optional<Component> title, Holder<MenuType<?>> menuType, boolean manipulatePlayerSlots, boolean lockPlayerInventory, List<DeclaredSlot> slots, List<DeclaredContainerProvider> containers) {
-    public static final Codec<DeclaredMenu> DIRECT_CODEC = RecordCodecBuilder.create(instance ->
+public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType, boolean manipulatePlayerSlots, boolean lockPlayerInventory, List<DeclaredSlot> slots, List<DeclaredContainerProvider> containers, List<ClickAction> closeActions) implements Menu {
+    public static final MapCodec<SimpleMenu> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    ComponentSerialization.CODEC.optionalFieldOf("title").forGetter(DeclaredMenu::title),
-                    RegistryFixedCodec.create(Registries.MENU).fieldOf("menu_type").forGetter(DeclaredMenu::menuType),
-                    Codec.BOOL.optionalFieldOf("manipulate_player_slots", false).forGetter(DeclaredMenu::manipulatePlayerSlots),
-                    Codec.BOOL.optionalFieldOf("lock_player_inventory", false).forGetter(DeclaredMenu::lockPlayerInventory),
-                    Codec.list(DeclaredSlot.CODEC).fieldOf("slots").forGetter(DeclaredMenu::slots),
-                    Codec.list(DeclaredContainerProvider.CODEC).optionalFieldOf("containers", Collections.emptyList()).forGetter(DeclaredMenu::containers)
-            ).apply(instance, DeclaredMenu::new));
+                    ComponentSerialization.CODEC.optionalFieldOf("title").forGetter(SimpleMenu::title),
+                    RegistryFixedCodec.create(Registries.MENU).fieldOf("menu_type").forGetter(SimpleMenu::menuType),
+                    Codec.BOOL.optionalFieldOf("manipulate_player_slots", false).forGetter(SimpleMenu::manipulatePlayerSlots),
+                    Codec.BOOL.optionalFieldOf("lock_player_inventory", false).forGetter(SimpleMenu::lockPlayerInventory),
+                    Codec.list(DeclaredSlot.CODEC).fieldOf("slots").forGetter(SimpleMenu::slots),
+                    Codec.list(DeclaredContainerProvider.CODEC).optionalFieldOf("containers", Collections.emptyList()).forGetter(SimpleMenu::containers),
+                    Codec.withAlternative(Codec.list(ClickActionTypes.TYPED_CODEC), ClickActionTypes.TYPED_CODEC, Collections::singletonList).optionalFieldOf("close_actions", Collections.emptyList()).forGetter(SimpleMenu::closeActions)
+            ).apply(instance, SimpleMenu::new));
+
+    @Override
+    public eu.cj4.declarativeui.api.menu.MenuType getType() {
+        return null;
+    }
 
     public Component getDefaultTitle(RegistryAccess access) {
-        Registry<DeclaredMenu> MENU_REGISTRY = access.lookupOrThrow(DeclarativeUIRegistries.MENU_REGISTRY);
+        Registry<Menu> MENU_REGISTRY = access.lookupOrThrow(DeclarativeUIRegistries.MENU);
         ResourceLocation guiId = MENU_REGISTRY.getKey(this);
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }

@@ -45,17 +45,17 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     @Unique
     @Override
     public Container declarative_ui$namespacedContainer(ResourceLocation containerLocation) {
-        DeclaredContainer declaredContainer = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER_REGISTRY).getValue(containerLocation);
+        DeclaredContainer declaredContainer = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER).getValue(containerLocation);
         if (declaredContainer == null) {
             return null;
         }
-        return declarative_ui$containers.computeIfAbsent(containerLocation, resourceKey1 -> new PlayerContainer(declaredContainer.size()));
+        return declarative_ui$containers.computeIfAbsent(containerLocation, location -> declaredContainer.createContainer());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void loadContainers(ValueInput valueInput, CallbackInfo ci) {
         ValueInput containers = valueInput.childOrEmpty("declarative_ui_containers");
-        Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER_REGISTRY);
+        Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER);
         for (Map.Entry<ResourceKey<DeclaredContainer>, DeclaredContainer> entry : containerRegistry.entrySet()) {
             Optional<ValueInput.TypedInputList<ItemStackWithSlot>> slots = containers.list(entry.getKey().location().toString(), ItemStackWithSlot.CODEC);
             if (slots.isEmpty()) continue;

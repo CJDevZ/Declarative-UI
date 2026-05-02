@@ -42,8 +42,8 @@ public final class ItemCommands {
         var modifyCommand = itemCommand.getChild("modify");
         var replaceCommand = itemCommand.getChild("replace");
 
-        modifyCommand.addChild(Commands.literal("container").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER_REGISTRY)).then(Commands.argument("slot", IntegerArgumentType.integer()).then(Commands.argument("modifier", ResourceOrIdArgument.lootModifier(buildContext)).executes(context -> modifyContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ResourceOrIdArgument.getLootModifier(context, "modifier"))))))).build());
-        replaceCommand.addChild(Commands.literal("container").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER_REGISTRY)).then(Commands.argument("slot", IntegerArgumentType.integer()).then(Commands.literal("with").then(Commands.argument("item", ItemArgument.item(buildContext)).executes(context -> setContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ItemArgument.getItem(context, "item").createItemStack(1, false))).then(Commands.argument("count", IntegerArgumentType.integer(1, 99)).executes(context -> setContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ItemArgument.getItem(context, "item").createItemStack(IntegerArgumentType.getInteger(context, "count"), true))))))
+        modifyCommand.addChild(Commands.literal("container").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER)).then(Commands.argument("slot", IntegerArgumentType.integer()).then(Commands.argument("modifier", ResourceOrIdArgument.lootModifier(buildContext)).executes(context -> modifyContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ResourceOrIdArgument.getLootModifier(context, "modifier"))))))).build());
+        replaceCommand.addChild(Commands.literal("container").then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER)).then(Commands.argument("slot", IntegerArgumentType.integer()).then(Commands.literal("with").then(Commands.argument("item", ItemArgument.item(buildContext)).executes(context -> setContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ItemArgument.getItem(context, "item").createItemStack(1, false))).then(Commands.argument("count", IntegerArgumentType.integer(1, 99)).executes(context -> setContainerItem(context.getSource(), EntityArgument.getPlayers(context, "targets"), ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(), IntegerArgumentType.getInteger(context, "slot"), ItemArgument.getItem(context, "item").createItemStack(IntegerArgumentType.getInteger(context, "count"), true))))))
                 .then(Commands.literal("from")
                         .then(Commands.literal("block")
                                 .then(Commands.argument("source", BlockPosArgument.blockPos())
@@ -53,7 +53,7 @@ public final class ItemCommands {
                                                         BlockPosArgument.getBlockPos(context, "source"),
                                                         IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                         EntityArgument.getPlayers(context, "targets"),
-                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                         IntegerArgumentType.getInteger(context, "slot")
                                                 )).then(Commands.argument("modifier", ResourceOrIdArgument.lootModifier(buildContext)).executes(context ->
                                                 blockToContainer(
@@ -61,7 +61,7 @@ public final class ItemCommands {
                                                         BlockPosArgument.getBlockPos(context, "source"),
                                                         IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                         EntityArgument.getPlayers(context, "targets"),
-                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                         IntegerArgumentType.getInteger(context, "slot"),
                                                         ResourceOrIdArgument.getLootModifier(context, "modifier")
                                                 ))))))
@@ -73,36 +73,36 @@ public final class ItemCommands {
                                                         EntityArgument.getEntity(context, "source"),
                                                         SlotArgument.getSlot(context, "sourceSlot"),
                                                         EntityArgument.getPlayers(context, "targets"),
-                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                         IntegerArgumentType.getInteger(context, "slot")
                                                 )).then(Commands.argument("modifier", ResourceOrIdArgument.lootModifier(buildContext)).executes(context ->
                                                 entityToContainer(context.getSource(),
                                                         EntityArgument.getEntity(context, "source"),
                                                         SlotArgument.getSlot(context, "sourceSlot"),
                                                         EntityArgument.getPlayers(context, "targets"),
-                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                        ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                         IntegerArgumentType.getInteger(context, "slot"),
                                                         ResourceOrIdArgument.getLootModifier(context, "modifier")
                                                 ))))))
                         .then(Commands.literal("container").then(
                                 Commands.argument("source", EntityArgument.player()).then(
-                                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER_REGISTRY)).then(
+                                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER)).then(
                                             Commands.argument("sourceSlot", IntegerArgumentType.integer()).executes(context ->
                                                     containerToContainer(
                                                             context.getSource(),
                                                             EntityArgument.getPlayer(context, "source"),
-                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                             SlotArgument.getSlot(context, "sourceSlot"),
                                                             EntityArgument.getPlayers(context, "targets"),
-                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                             IntegerArgumentType.getInteger(context, "slot")
                                                     )).then(Commands.argument("modifier", ResourceOrIdArgument.lootModifier(buildContext)).executes(context ->
                                                     containerToContainer(context.getSource(),
                                                             EntityArgument.getPlayer(context, "source"),
-                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                             SlotArgument.getSlot(context, "sourceSlot"),
                                                             EntityArgument.getPlayers(context, "targets"),
-                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                            ResourceKeyArgumentAccessor.callResolveKey(context, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                             IntegerArgumentType.getInteger(context, "slot"),
                                                             ResourceOrIdArgument.getLootModifier(context, "modifier")
                                                     )))))))
@@ -110,12 +110,12 @@ public final class ItemCommands {
 
         replaceCommand.getChild("block").getChild("pos").getChild("slot").getChild("from").addChild(
                 Commands.literal("container").then(Commands.argument("source", EntityArgument.player()).then(
-                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER_REGISTRY)).then(
+                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER)).then(
                                 Commands.argument("sourceSlot", IntegerArgumentType.integer()).executes(context ->
                                         containerToBlock(
                                                 context.getSource(),
                                                 EntityArgument.getPlayer(context, "source"),
-                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                 IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                 BlockPosArgument.getBlockPos(context, "pos"),
                                                 SlotArgument.getSlot(context, "slot")
@@ -123,7 +123,7 @@ public final class ItemCommands {
                                         containerToBlock(
                                                 context.getSource(),
                                                 EntityArgument.getPlayer(context, "source"),
-                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                 IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                 BlockPosArgument.getBlockPos(context, "pos"),
                                                 SlotArgument.getSlot(context, "slot"),
@@ -131,12 +131,12 @@ public final class ItemCommands {
                                         )))))).build());
         replaceCommand.getChild("entity").getChild("targets").getChild("slot").getChild("from").addChild(
                 Commands.literal("container").then(Commands.argument("source", EntityArgument.player()).then(
-                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER_REGISTRY)).then(
+                        Commands.argument("sourceContainer", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER)).then(
                                 Commands.argument("sourceSlot", IntegerArgumentType.integer()).executes(context ->
                                         containerToEntity(
                                                 context.getSource(),
                                                 EntityArgument.getPlayer(context, "source"),
-                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                 IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                 EntityArgument.getEntities(context, "targets"),
                                                 SlotArgument.getSlot(context, "slot")
@@ -144,7 +144,7 @@ public final class ItemCommands {
                                         containerToEntity(
                                                 context.getSource(),
                                                 EntityArgument.getPlayer(context, "source"),
-                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER_REGISTRY, ERROR_INVALID_CONTAINER).key().location(),
+                                                ResourceKeyArgumentAccessor.callResolveKey(context, "sourceContainer", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().location(),
                                                 IntegerArgumentType.getInteger(context, "sourceSlot"),
                                                 EntityArgument.getEntities(context, "targets"),
                                                 SlotArgument.getSlot(context, "slot"),

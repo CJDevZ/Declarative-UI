@@ -2,12 +2,12 @@ package eu.cj4.declarativeui.impl.command.argument;
 
 import com.google.common.collect.Maps;
 import com.mojang.brigadier.arguments.*;
+import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.codec.LazyEnumCodec;
 import eu.cj4.declarativeui.api.command.argument.CommandArgument;
-import eu.cj4.declarativeui.api.command.argument.CommandArgumentType;
 import eu.cj4.declarativeui.mixin.argument.*;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.arguments.*;
@@ -19,9 +19,13 @@ import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public final class CommandArgumentTypes {
@@ -29,32 +33,30 @@ public final class CommandArgumentTypes {
     private static final Map<ArgumentTypeInfo<?, ?>, MapCodec<? extends CommandArgument<?>>> BY_TYPE_INFO = Maps.newHashMap();
 
     private static final Codec<StringArgumentType.StringType> STRING_TYPE_CODEC = LazyEnumCodec.fromEnum(StringArgumentType.StringType.values());
-    public static final CommandArgumentType FLOAT_ARGUMENT = register(FloatArgumentType.class, RecordCodecBuilder.<FloatArgument>mapCodec(instance -> instance.group(
-            Codec.FLOAT.optionalFieldOf("min", -Float.MAX_VALUE).forGetter(FloatArgument::min),
-            Codec.FLOAT.optionalFieldOf("max", Float.MAX_VALUE).forGetter(FloatArgument::max)
-    ).apply(instance, FloatArgument::new)));
-    public static final CommandArgumentType DOUBLE_ARGUMENT = register(DoubleArgumentType.class, RecordCodecBuilder.<DoubleArgument>mapCodec(instance -> instance.group(
-            Codec.DOUBLE.optionalFieldOf("min", -Double.MAX_VALUE).forGetter(DoubleArgument::min),
-            Codec.DOUBLE.optionalFieldOf("max", Double.MAX_VALUE).forGetter(DoubleArgument::max)
-    ).apply(instance, DoubleArgument::new)));
-    public static final CommandArgumentType INTEGER_ARGUMENT = register(IntegerArgumentType.class, RecordCodecBuilder.<IntegerArgument>mapCodec(instance -> instance.group(
-            Codec.INT.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(IntegerArgument::min),
-            Codec.INT.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(IntegerArgument::max)
-    ).apply(instance, IntegerArgument::new)));
-    public static final CommandArgumentType LONG_ARGUMENT = register(LongArgumentType.class, RecordCodecBuilder.<LongArgument>mapCodec(instance -> instance.group(
-            Codec.LONG.optionalFieldOf("min", Long.MIN_VALUE).forGetter(LongArgument::min),
-            Codec.LONG.optionalFieldOf("max", Long.MAX_VALUE).forGetter(LongArgument::max)
-    ).apply(instance, LongArgument::new)));
-    public static final CommandArgumentType ENTITY_ARGUMENT = register(net.minecraft.commands.arguments.EntityArgument.class, RecordCodecBuilder.<EntityArgument>mapCodec(instance -> instance.group(
-            Codec.BOOL.fieldOf("single").forGetter(EntityArgument::single),
-            Codec.BOOL.fieldOf("players_only").forGetter(EntityArgument::playersOnly)
-    ).apply(instance, EntityArgument::new)));
-    public static final CommandArgumentType STRING_ARGUMENT = register(StringArgumentType.class, STRING_TYPE_CODEC.fieldOf("variant").xmap(StringArgument::new, StringArgument::type));
-    public static final CommandArgumentType TIME_ARGUMENT = register(net.minecraft.commands.arguments.TimeArgument.class, Codec.INT.optionalFieldOf("min", 0).xmap(TimeArgument::new, TimeArgument::min));
-    public static final CommandArgumentType SCORE_HOLDER_ARGUMENT = register(net.minecraft.commands.arguments.ScoreHolderArgument.class, Codec.BOOL.fieldOf("multiple").xmap(ScoreHolderArgument::new, ScoreHolderArgument::multiple));
+
+    public static <T, T1> void registerCodec1(Class<? extends ArgumentType<T>> argumentClass, Function<T1, ArgumentType<T>> builder, MapCodec<T1> t1Codec) {
+        registerCodec1(argumentClass, (buildContext, t1) -> builder.apply(t1), t1Codec);
+    }
+
+    public static <T, T1> void registerCodec1(Class<? extends ArgumentType<T>> argumentClass, BiFunction<CommandBuildContext, T1, ArgumentType<T>> builder, MapCodec<T1> t1Codec) {
+        ArgumentTypeInfo<?, ?> argumentTypeInfo = ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass);
+        var mapCodec = Codec1Argument.create(argumentTypeInfo, builder, t1Codec);
+        register(argumentClass, mapCodec);
+    }
+
+    public static <T, T1, T2> void registerCodec2(Class<? extends ArgumentType<T>> argumentClass, BiFunction<T1, T2, ArgumentType<T>> builder, MapCodec<T1> t1Codec, MapCodec<T2> t2Codec) {
+        registerCodec2(argumentClass, (buildContext, t1, t2) -> builder.apply(t1, t2), t1Codec, t2Codec);
+    }
+
+    public static <T, T1, T2> void registerCodec2(Class<? extends ArgumentType<T>> argumentClass, Function3<CommandBuildContext, T1, T2, ArgumentType<T>> builder, MapCodec<T1> t1Codec, MapCodec<T2> t2Codec) {
+        ArgumentTypeInfo<?, ?> argumentTypeInfo = ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass);
+        var mapCodec = Codec2Argument.create(argumentTypeInfo, builder, t1Codec, t2Codec);
+        register(argumentClass, mapCodec);
+    }
 
     public static <T> void registerContextAware(Class<? extends ArgumentType<T>> argumentClass, Function<CommandBuildContext, ArgumentType<T>> function) {
-        var mapCodec = RecordCodecBuilder.build(RecordCodecBuilder.stable(new ContextAwareArgument<>(ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass), function)));
+        ArgumentTypeInfo<?, ?> argumentTypeInfo = ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass);
+        var mapCodec = RecordCodecBuilder.build(RecordCodecBuilder.stable(new ContextAwareArgument<>(argumentTypeInfo, function)));
         register(argumentClass, mapCodec);
     }
 
@@ -63,11 +65,10 @@ public final class CommandArgumentTypes {
         register(argumentClass, mapCodec);
     }
 
-    public static <T> CommandArgumentType register(Class<? extends ArgumentType<T>> argumentClass, MapCodec<? extends CommandArgument<T>> mapCodec) {
+    public static <T> ArgumentTypeInfo<?, ?> register(Class<? extends ArgumentType<T>> argumentClass, MapCodec<? extends CommandArgument<T>> mapCodec) {
         var argumentTypeInfo = ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass);
         BY_TYPE_INFO.put(argumentTypeInfo, mapCodec);
-        return new CommandArgumentType(argumentTypeInfo, mapCodec);
-        //return Registry.register(DeclarativeUIBuiltInRegistries.COMMAND_ARGUMENT_TYPE, ResourceLocation.parse(name), new CommandArgumentType(argumentTypeInfo, mapCodec));
+        return argumentTypeInfo;
     }
 
     public static void bootStrap() {
@@ -77,6 +78,12 @@ public final class CommandArgumentTypes {
         TYPED_CODEC = BuiltInRegistries.COMMAND_ARGUMENT_TYPE.byNameCodec().dispatch(CommandArgument::getType, BY_TYPE_INFO::get);
 
         registerStable(BoolArgumentType.class, BoolArgumentType.bool());
+        registerCodec2(FloatArgumentType.class, FloatArgumentType::floatArg, Codec.FLOAT.optionalFieldOf("min", -Float.MAX_VALUE), Codec.FLOAT.optionalFieldOf("max", Float.MAX_VALUE));
+        registerCodec2(DoubleArgumentType.class, DoubleArgumentType::doubleArg, Codec.DOUBLE.optionalFieldOf("min", -Double.MAX_VALUE), Codec.DOUBLE.optionalFieldOf("max", Double.MAX_VALUE));
+        registerCodec2(IntegerArgumentType.class, IntegerArgumentType::integer, Codec.INT.optionalFieldOf("min", Integer.MIN_VALUE), Codec.INT.optionalFieldOf("max", Integer.MAX_VALUE));
+        registerCodec2(LongArgumentType.class, LongArgumentType::longArg, Codec.LONG.optionalFieldOf("min", Long.MIN_VALUE), Codec.LONG.optionalFieldOf("max", Long.MAX_VALUE));
+        registerCodec1(StringArgumentType.class, StringArgumentTypeAccessor::create, STRING_TYPE_CODEC.fieldOf("variant"));
+        registerCodec2(EntityArgument.class, EntityArgumentAccessor::create, Codec.BOOL.fieldOf("single"), Codec.BOOL.fieldOf("players_only"));
         registerStable(GameProfileArgument.class, GameProfileArgument.gameProfile());
         registerStable(BlockPosArgument.class, BlockPosArgument.blockPos());
         registerStable(ColumnPosArgument.class, ColumnPosArgument.columnPos());
@@ -101,6 +108,7 @@ public final class CommandArgumentTypes {
         registerStable(AngleArgument.class, AngleArgument.angle());
         registerStable(RotationArgument.class, RotationArgument.rotation());
         registerStable(ScoreboardSlotArgument.class, ScoreboardSlotArgument.displaySlot());
+        registerCodec1(ScoreHolderArgument.class, ScoreHolderArgument::new, Codec.BOOL.fieldOf("multiple"));
         registerStable(SwizzleArgument.class, SwizzleArgument.swizzle());
         registerStable(TeamArgument.class, TeamArgument.team());
         registerStable(SlotArgument.class, SlotArgument.slot());
@@ -112,6 +120,16 @@ public final class CommandArgumentTypes {
         registerStable(RangeArgument.Floats.class, RangeArgument.floatRange());
         registerStable(DimensionArgument.class, DimensionArgument.dimension());
         registerStable(GameModeArgument.class, GameModeArgument.gameMode());
+        registerCodec1(TimeArgument.class, TimeArgument::time, Codec.INT.optionalFieldOf("min", 0));
+
+        ResourceKey<? extends Registry<Registry<Object>>> rootRegistry = ResourceKey.createRegistryKey(Registries.ROOT_REGISTRY_NAME);
+        Codec<ResourceKey<Registry<Object>>> resourceKeyCodec = ResourceKey.codec(rootRegistry);
+        registerCodec1((Class) ResourceOrTagArgument.class, (buildContext, resourceKey) -> ResourceOrTagArgument.resourceOrTag(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
+        registerCodec1((Class) ResourceOrTagKeyArgument.class, resourceKey -> ResourceOrTagKeyArgument.resourceOrTagKey(resourceKey), resourceKeyCodec.fieldOf("registry"));
+        registerCodec1((Class) ResourceArgument.class, (buildContext, resourceKey) -> ResourceArgument.resource(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
+        registerCodec1((Class) ResourceKeyArgument.class, resourceKey -> ResourceKeyArgument.key(resourceKey), resourceKeyCodec.fieldOf("registry"));
+        registerCodec1((Class) ResourceSelectorArgument.class, (buildContext, resourceKey) -> ResourceSelectorArgument.resourceSelector(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
+
         registerStable(TemplateMirrorArgument.class, TemplateMirrorArgument.templateMirror());
         registerStable(TemplateRotationArgument.class, TemplateRotationArgument.templateRotation());
         registerStable(HeightmapTypeArgument.class, HeightmapTypeArgument.heightmap());

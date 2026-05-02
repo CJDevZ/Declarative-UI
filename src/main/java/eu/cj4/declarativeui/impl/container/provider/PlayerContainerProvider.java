@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 
 public record PlayerContainerProvider(ResourceKey<DeclaredContainer> container) implements ContainerProvider {
     public static final MapCodec<PlayerContainerProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceKey.codec(DeclarativeUIRegistries.CONTAINER_REGISTRY).fieldOf("container").forGetter(PlayerContainerProvider::container)
+            ResourceKey.codec(DeclarativeUIRegistries.CONTAINER).fieldOf("container").forGetter(PlayerContainerProvider::container)
     ).apply(instance, PlayerContainerProvider::new));
 
     @Override

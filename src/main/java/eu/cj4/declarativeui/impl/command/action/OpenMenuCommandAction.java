@@ -5,7 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.command.action.CommandAction;
 import eu.cj4.declarativeui.api.command.action.CommandActionType;
-import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
+import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
@@ -14,8 +14,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collections;
 
-public record OpenMenuCommandAction(ResourceKey<DeclaredMenu> menu) implements CommandAction {
-    public static final MapCodec<OpenMenuCommandAction> CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU_REGISTRY).fieldOf("menu").xmap(OpenMenuCommandAction::new, OpenMenuCommandAction::menu);
+public record OpenMenuCommandAction(ResourceKey<Menu> menu) implements CommandAction {
+    public static final MapCodec<OpenMenuCommandAction> CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU).fieldOf("menu").xmap(OpenMenuCommandAction::new, OpenMenuCommandAction::menu);
 
     @Override
     public CommandActionType getType() {
@@ -26,8 +26,8 @@ public record OpenMenuCommandAction(ResourceKey<DeclaredMenu> menu) implements C
     public int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSourceStack sourceStack = context.getSource();
         ServerPlayer player = sourceStack.getPlayerOrException();
-        Registry<DeclaredMenu> MENU_REGISTRY = sourceStack.registryAccess().lookupOrThrow(DeclarativeUIRegistries.MENU_REGISTRY);
-        DeclaredMenu menu = MENU_REGISTRY.getValueOrThrow(this.menu);
+        Registry<Menu> MENU_REGISTRY = sourceStack.registryAccess().lookupOrThrow(DeclarativeUIRegistries.MENU);
+        Menu menu = MENU_REGISTRY.getValueOrThrow(this.menu);
         menu.open(sourceStack, Collections.singletonList(player));
         return 1;
     }
