@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
-import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
+import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,7 +21,7 @@ public record RefreshMenuTitleClickAction() implements ClickAction {
     }
 
     @Override
-    public void click(DeclaredMenu menu, SlotGuiInterface slotGui) throws CommandSyntaxException {
+    public void click(SimpleMenu menu, SlotGuiInterface slotGui) throws CommandSyntaxException {
         ServerPlayer serverPlayer = slotGui.getPlayer();
         CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withSuppressedOutput().withPermission(Commands.LEVEL_GAMEMASTERS);
         slotGui.setTitle(ComponentUtils.updateForEntity(commandSourceStack, menu.title().orElse(menu.getDefaultTitle(serverPlayer.registryAccess())), serverPlayer, 0));

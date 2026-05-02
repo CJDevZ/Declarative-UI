@@ -3,7 +3,7 @@ package eu.cj4.declarativeui.impl.menu.slot.action;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
-import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
+import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -20,7 +20,7 @@ public record FunctionClickAction(ResourceLocation function) implements ClickAct
     }
 
     @Override
-    public void click(DeclaredMenu menu, SlotGuiInterface slotGui) {
+    public void click(SimpleMenu menu, SlotGuiInterface slotGui) {
         ServerPlayer serverPlayer = slotGui.getPlayer();
         ServerFunctionManager functionManager = serverPlayer.level().getServer().getFunctions();
         functionManager.get(this.function).ifPresent(commandFunction -> {

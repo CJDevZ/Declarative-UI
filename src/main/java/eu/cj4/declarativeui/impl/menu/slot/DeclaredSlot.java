@@ -4,8 +4,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.impl.menu.DeclaredMenu;
+import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
+import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SlotProviders;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
@@ -30,11 +31,11 @@ public record DeclaredSlot(int slot, SlotProvider provider, List<ClickEvent> cli
         return this.provider.createElement(source, clickCallback);
     }
 
-    public GuiElementInterface.ClickCallback clickCallback(DeclaredMenu declaredMenu) {
+    public GuiElementInterface.ClickCallback clickCallback(SimpleMenu declaredMenu) {
         return clickEvents.isEmpty() ? GuiElementInterface.EMPTY_CALLBACK : new SlotCallback(declaredMenu, clickEvents);
     }
 
-    protected record SlotCallback(DeclaredMenu declaredMenu, List<ClickEvent> clickEvents) implements GuiElementInterface.ClickCallback {
+    protected record SlotCallback(SimpleMenu declaredMenu, List<ClickEvent> clickEvents) implements GuiElementInterface.ClickCallback {
         private static final Logger LOGGER = LogUtils.getLogger();
 
         @Override
