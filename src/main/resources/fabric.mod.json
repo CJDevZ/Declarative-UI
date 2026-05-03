@@ -4,7 +4,9 @@
   "version": "${version}",
   "name": "Declarative UI",
   "description": "Data-driven UI, fully server-side.",
-  "authors": [],
+  "authors": [
+    "CJDev"
+  ],
   "contact": {},
   "license": "LGPLv3",
   "icon": "assets/declarative_ui/icon.png",
