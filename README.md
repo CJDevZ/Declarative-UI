@@ -5,6 +5,7 @@
 
 ## 📖 Usage
 - Use `/item (modify|replace) container` for command modification of player stored containers
+- Use `/declarative_ui open <targets> <menu>` to open a menu
 - Search for Declarative UI Generators on [Modded Generators](https://misode.cj4.eu/partners/)
 - Make sure to put your json files into `data/<namespace>/declarative_ui/(command|menu|container)`
 
