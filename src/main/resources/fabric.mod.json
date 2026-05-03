@@ -6,7 +6,7 @@
   "description": "Data-driven UI, fully server-side.",
   "authors": [],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "LGPLv3",
   "icon": "assets/declarative_ui/icon.png",
   "environment": "*",
   "entrypoints": {
