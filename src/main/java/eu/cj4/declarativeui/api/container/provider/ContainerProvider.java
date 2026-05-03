@@ -8,8 +8,8 @@ import eu.cj4.declarativeui.impl.container.provider.EnderChestProvider;
 import eu.cj4.declarativeui.impl.container.provider.PlayerContainerProvider;
 import eu.cj4.declarativeui.impl.container.provider.PlayerInventoryProvider;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
@@ -34,7 +34,7 @@ public interface ContainerProvider {
         return new PlayerInventoryProvider();
     }
 
-    static ContainerProviderType register(ResourceLocation id, MapCodec<? extends ContainerProvider> mapCodec) {
+    static ContainerProviderType register(Identifier id, MapCodec<? extends ContainerProvider> mapCodec) {
         return Registry.register(DeclarativeUIBuiltInRegistries.CONTAINER_PROVIDER_TYPE, id, new ContainerProviderType(mapCodec));
     }
 }

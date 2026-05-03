@@ -14,7 +14,7 @@ import net.minecraft.commands.execution.CustomCommandExecutor;
 import net.minecraft.commands.execution.ExecutionControl;
 import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
 
 import java.util.Collections;
@@ -22,11 +22,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandling<CommandSourceStack> implements CustomCommandExecutor.CommandAdapter<CommandSourceStack>, CommandAction {
-    public static final MapCodec<FunctionCommandAction> CODEC = ResourceLocation.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
+    public static final MapCodec<FunctionCommandAction> CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
 
-    private final ResourceLocation function;
+    private final Identifier function;
 
-    public FunctionCommandAction(ResourceLocation function) {
+    public FunctionCommandAction(Identifier function) {
         this.function = function;
     }
 
@@ -35,7 +35,7 @@ public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandli
         return CommandActionTypes.FUNCTION;
     }
 
-    public ResourceLocation function() {
+    public Identifier function() {
         return this.function;
     }
 

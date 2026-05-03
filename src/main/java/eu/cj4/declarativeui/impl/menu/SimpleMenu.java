@@ -7,14 +7,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.impl.menu.container.provider.DeclaredContainerProvider;
+import eu.cj4.declarativeui.impl.menu.gui.SimpleGuiBuilder;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
 import eu.cj4.declarativeui.impl.menu.slot.LockedSlot;
-import eu.pb4.sgui.api.gui.SimpleGui;
-import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -23,13 +21,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -45,25 +44,25 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
                     Codec.BOOL.optionalFieldOf("lock_player_inventory", false).forGetter(SimpleMenu::lockPlayerInventory),
                     Codec.list(DeclaredSlot.CODEC).fieldOf("slots").forGetter(SimpleMenu::slots),
                     Codec.list(DeclaredContainerProvider.CODEC).optionalFieldOf("containers", Collections.emptyList()).forGetter(SimpleMenu::containers),
-                    Codec.withAlternative(Codec.list(ClickActionTypes.TYPED_CODEC), ClickActionTypes.TYPED_CODEC, Collections::singletonList).optionalFieldOf("close_actions", Collections.emptyList()).forGetter(SimpleMenu::closeActions)
+                    ClickActionTypes.LIST_CODEC.optionalFieldOf("close_actions", Collections.emptyList()).forGetter(SimpleMenu::closeActions)
             ).apply(instance, SimpleMenu::new));
 
     @Override
     public eu.cj4.declarativeui.api.menu.MenuType getType() {
-        return null;
+        return MenuTypes.SIMPLE;
     }
 
     public Component getDefaultTitle(RegistryAccess access) {
         Registry<Menu> MENU_REGISTRY = access.lookupOrThrow(DeclarativeUIRegistries.MENU);
-        ResourceLocation guiId = MENU_REGISTRY.getKey(this);
+        Identifier guiId = MENU_REGISTRY.getKey(this);
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }
 
-    public @NotNull SimpleGuiBuilder instantiate(CommandSourceStack sourceStack) throws CommandSyntaxException {
+    public @NonNull SimpleGuiBuilder instantiate(CommandSourceStack sourceStack) throws CommandSyntaxException {
         MenuType<?> menuType = this.menuType.value();
-        SimpleGuiBuilder builder = new SimpleGuiBuilder(menuType, manipulatePlayerSlots);
-
+        SimpleGuiBuilder builder = new SimpleGuiBuilder(this, menuType, manipulatePlayerSlots);
         builder.setTitle(ComponentUtils.updateForEntity(sourceStack, title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0));
+        builder.setCloseActions(this.closeActions);
 
         for (DeclaredSlot declaredSlot : this.slots) {
             builder.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
@@ -87,9 +86,7 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
     public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
         SimpleGuiBuilder builder = instantiate(sourceStack);
         for (ServerPlayer target : targets) {
-            SimpleGui gui = builder.build(target);
-            gui.setLockPlayerInventory(this.lockPlayerInventory());
-            gui.open();
+            builder.build(target).open();
         }
     }
 }

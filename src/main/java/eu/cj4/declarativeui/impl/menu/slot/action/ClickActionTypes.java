@@ -6,10 +6,14 @@ import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
 import eu.cj4.declarativeui.impl.DeclarativeUI;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+
+import java.util.Collections;
+import java.util.List;
 
 public final class ClickActionTypes {
     public static final Codec<ClickAction> TYPED_CODEC;
+    public static final Codec<List<ClickAction>> LIST_CODEC;
     public static final ClickActionType FUNCTION;
     public static final ClickActionType OPEN_MENU;
     public static final ClickActionType CLOSE_MENU;
@@ -17,7 +21,7 @@ public final class ClickActionTypes {
     public static final ClickActionType REFRESH_MENU_TITLE;
 
     private static ClickActionType register(String name, MapCodec<? extends ClickAction> mapCodec) {
-        return ClickAction.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return ClickAction.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {
@@ -25,6 +29,7 @@ public final class ClickActionTypes {
 
     static {
         TYPED_CODEC = DeclarativeUIBuiltInRegistries.CLICK_ACTION_TYPE.byNameCodec().dispatch(ClickAction::getType, ClickActionType::codec);
+        LIST_CODEC = Codec.withAlternative(Codec.list(TYPED_CODEC), TYPED_CODEC, Collections::singletonList);
         FUNCTION = register("function", FunctionClickAction.CODEC);
         OPEN_MENU = register("open_menu", OpenMenuClickAction.CODEC);
         CLOSE_MENU = register("close_menu", CloseMenuClickAction.CODEC);

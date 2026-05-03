@@ -25,7 +25,7 @@ public record PlayerContainerProvider(ResourceKey<DeclaredContainer> container) 
     @Override
     public Container getContainer(Entity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
-            return ((NamespacedContainerHolder) serverPlayer).declarative_ui$namespacedContainer(this.container.location());
+            return ((NamespacedContainerHolder) serverPlayer).declarative_ui$namespacedContainer(this.container.identifier());
         }
         return null;
     }

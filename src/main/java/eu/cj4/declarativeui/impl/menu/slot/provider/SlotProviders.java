@@ -6,7 +6,7 @@ import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.cj4.declarativeui.impl.DeclarativeUI;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class SlotProviders {
     public static final Codec<SlotProvider> TYPED_CODEC;
@@ -15,7 +15,7 @@ public final class SlotProviders {
     public static final SlotProviderType ANIMATED;
 
     private static SlotProviderType register(String name, MapCodec<? extends SlotProvider> mapCodec) {
-        return SlotProvider.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return SlotProvider.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

@@ -11,10 +11,4 @@ public interface EntityArgumentAccessor {
     static EntityArgument create(boolean single, boolean playersOnly) {
         throw new UnsupportedOperationException();
     }
-
-    @Accessor
-    boolean isSingle();
-
-    @Accessor
-    boolean isPlayersOnly();
 }

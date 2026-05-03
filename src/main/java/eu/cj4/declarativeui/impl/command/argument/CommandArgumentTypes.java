@@ -113,7 +113,7 @@ public final class CommandArgumentTypes {
         registerStable(TeamArgument.class, TeamArgument.team());
         registerStable(SlotArgument.class, SlotArgument.slot());
         registerStable(SlotsArgument.class, SlotsArgument.slots());
-        registerStable(ResourceLocationArgument.class, ResourceLocationArgument.id());
+        registerStable(IdentifierArgument.class, IdentifierArgument.id());
         registerStable(FunctionArgument.class, FunctionArgument.functions());
         registerStable(EntityAnchorArgument.class, EntityAnchorArgument.anchor());
         registerStable(RangeArgument.Ints.class, RangeArgument.intRange());

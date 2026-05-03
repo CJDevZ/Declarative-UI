@@ -5,19 +5,23 @@ import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
 import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 
 public interface ClickAction {
     ClickActionType getType();
 
-    void click(SimpleMenu menu, SlotGuiInterface slotGui) throws CommandSyntaxException;
+    default void click(Menu menu, SlotGuiInterface slotGui) throws CommandSyntaxException {
+        click(menu, slotGui, null);
+    }
+    void click(Menu menu, SlotGuiInterface slotGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException;
 
-    static FunctionCommandAction function(ResourceLocation functionId) {
+    static FunctionCommandAction function(Identifier functionId) {
         return new FunctionCommandAction(functionId);
     }
 
@@ -25,7 +29,7 @@ public interface ClickAction {
         return new OpenMenuCommandAction(menu);
     }
     
-    static ClickActionType register(ResourceLocation id, MapCodec<? extends ClickAction> mapCodec) {
+    static ClickActionType register(Identifier id, MapCodec<? extends ClickAction> mapCodec) {
         return Registry.register(DeclarativeUIBuiltInRegistries.CLICK_ACTION_TYPE, id, new ClickActionType(mapCodec));
     }
 }

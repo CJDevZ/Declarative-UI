@@ -10,9 +10,7 @@
     "ServerPlayerMixin",
     "argument.ArgumentTypeInfosAccessor",
     "argument.EntityArgumentAccessor",
-    "argument.ScoreHolderArgumentAccessor",
-    "argument.StringArgumentTypeAccessor",
-    "argument.TimeArgumentAccessor"
+    "argument.StringArgumentTypeAccessor"
   ],
   "client": [
   ],

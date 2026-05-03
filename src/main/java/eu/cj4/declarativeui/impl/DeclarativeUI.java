@@ -6,7 +6,6 @@ import eu.cj4.declarativeui.impl.command.action.CommandActionTypes;
 import eu.cj4.declarativeui.impl.command.DeclarativeUICommand;
 import eu.cj4.declarativeui.impl.command.ItemCommands;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
-import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.menu.MenuTypes;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
@@ -39,6 +38,7 @@ public class DeclarativeUI implements ModInitializer {
         CommandActionTypes.bootStrap();
         ClickActionTypes.bootStrap();
         MenuTypes.bootStrap();
+        //SlotSources.
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> {
             DeclarativeUICommand.register(dispatcher);
@@ -46,10 +46,10 @@ public class DeclarativeUI implements ModInitializer {
 
             Set<String> knownCommands = dispatcher.getRoot().getChildren().stream().map(CommandNode::getName).collect(Collectors.toSet());
             buildContext.lookupOrThrow(DeclarativeUIRegistries.COMMAND).listElements().forEach(reference -> {
-                String commandName = reference.key().location().toString();
+                String commandName = reference.key().identifier().toString();
                 var node = reference.value().register(dispatcher, buildContext, commandName);
 
-                String path = reference.key().location().getPath();
+                String path = reference.key().identifier().getPath();
                 if (!knownCommands.contains(path)) {
                     knownCommands.add(path);
                     dispatcher.register(Commands.literal(path).redirect(node).executes(node.getCommand()));

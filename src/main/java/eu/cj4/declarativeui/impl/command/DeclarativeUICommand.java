@@ -6,13 +6,13 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
+import eu.cj4.declarativeui.mixin.ResourceKeyArgumentAccessor;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceKeyArgument;
-import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
@@ -29,11 +29,10 @@ public final class DeclarativeUICommand {
 
     private static int openMenu(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
-        ResourceKey<Menu> menuResourceKey = ResourceKeyArgument.getRegistryKey(context, "menu", DeclarativeUIRegistries.MENU, ERROR_INVALID_MENU);
+        Holder.Reference<Menu> menuReference = ResourceKeyArgumentAccessor.callResolveKey(context, "menu", DeclarativeUIRegistries.MENU, ERROR_INVALID_MENU);
 
         CommandSourceStack sourceStack = context.getSource();
-        Registry<Menu> MENU_REGISTRY = sourceStack.registryAccess().lookupOrThrow(DeclarativeUIRegistries.MENU);
-        Menu menu = MENU_REGISTRY.getValueOrThrow(menuResourceKey);
+        Menu menu = menuReference.value();
         menu.open(sourceStack, targets);
 
         return 1;
