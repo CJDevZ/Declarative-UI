@@ -8,4 +8,4 @@
 - Search for Declarative UI Generators on [Modded Generators](https://misode.cj4.eu/partners/)
 - Make sure to put your json files into `data/<namespace>/declarative_ui/(command|menu|container)`
 
-You may also download the [.mcdoc]() and [commands.json]() for Spyglass
+You may also download the [.mcdoc and commands.json](https://cdn.modrinth.com/data/5UTWPtx3/versions/efRCNid9/spyglass.zip) for Spyglass
