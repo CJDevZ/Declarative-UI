@@ -5,13 +5,12 @@ import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
-import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.commands.CommandResultCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.FunctionInstantiationException;
 import net.minecraft.commands.execution.ExecutionContext;
-import net.minecraft.commands.functions.MacroFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerFunctionManager;
@@ -33,8 +32,8 @@ public record FunctionClickAction(Identifier function) implements ClickAction {
     }
 
     @Override
-    public void click(Menu menu, SlotGuiInterface slotGui, @Nullable CompoundTag compoundTag) {
-        ServerPlayer serverPlayer = slotGui.getPlayer();
+    public void click(Menu menu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) {
+        ServerPlayer serverPlayer = slotBasedGui.getPlayer();
         ServerFunctionManager functionManager = serverPlayer.level().getServer().getFunctions();
         functionManager.get(this.function).ifPresent(commandFunction -> {
             ProfilerFiller profilerFiller = Profiler.get();

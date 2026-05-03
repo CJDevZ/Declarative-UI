@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
-import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.nbt.CompoundTag;
 import org.jspecify.annotations.Nullable;
 
@@ -18,7 +18,7 @@ public record CloseMenuClickAction() implements ClickAction {
     }
 
     @Override
-    public void click(Menu declaredMenu, SlotGuiInterface slotGui, @Nullable CompoundTag compoundTag) {
-        slotGui.close();
+    public void click(Menu declaredMenu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) {
+        slotBasedGui.close();
     }
 }

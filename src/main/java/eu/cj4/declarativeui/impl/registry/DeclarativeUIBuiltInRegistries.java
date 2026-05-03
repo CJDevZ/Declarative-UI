@@ -19,10 +19,10 @@ public final class DeclarativeUIBuiltInRegistries {
     }
 
     static {
-        MENU_TYPE = FabricRegistryBuilder.createSimple(DeclarativeUIRegistries.MENU_TYPE).buildAndRegister();
-        CONTAINER_PROVIDER_TYPE = FabricRegistryBuilder.createSimple(DeclarativeUIRegistries.CONTAINER_PROVIDER_TYPE).buildAndRegister();
-        SLOT_PROVIDER_TYPE = FabricRegistryBuilder.createSimple(DeclarativeUIRegistries.SLOT_PROVIDER_TYPE).buildAndRegister();
-        COMMAND_ACTION_TYPE = FabricRegistryBuilder.createSimple(DeclarativeUIRegistries.COMMAND_ACTION_TYPE).buildAndRegister();
-        CLICK_ACTION_TYPE = FabricRegistryBuilder.createSimple(DeclarativeUIRegistries.CLICK_ACTION_TYPE).buildAndRegister();
+        MENU_TYPE = FabricRegistryBuilder.create(DeclarativeUIRegistries.MENU_TYPE).buildAndRegister();
+        CONTAINER_PROVIDER_TYPE = FabricRegistryBuilder.create(DeclarativeUIRegistries.CONTAINER_PROVIDER_TYPE).buildAndRegister();
+        SLOT_PROVIDER_TYPE = FabricRegistryBuilder.create(DeclarativeUIRegistries.SLOT_PROVIDER_TYPE).buildAndRegister();
+        COMMAND_ACTION_TYPE = FabricRegistryBuilder.create(DeclarativeUIRegistries.COMMAND_ACTION_TYPE).buildAndRegister();
+        CLICK_ACTION_TYPE = FabricRegistryBuilder.create(DeclarativeUIRegistries.CLICK_ACTION_TYPE).buildAndRegister();
     }
 }

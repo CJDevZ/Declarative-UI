@@ -6,7 +6,7 @@ import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
 import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
-import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -16,10 +16,10 @@ import org.jspecify.annotations.Nullable;
 public interface ClickAction {
     ClickActionType getType();
 
-    default void click(Menu menu, SlotGuiInterface slotGui) throws CommandSyntaxException {
-        click(menu, slotGui, null);
+    default void click(Menu menu, SlotBasedGui slotBasedGui) throws CommandSyntaxException {
+        click(menu, slotBasedGui, null);
     }
-    void click(Menu menu, SlotGuiInterface slotGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException;
+    void click(Menu menu, SlotBasedGui slotGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException;
 
     static FunctionCommandAction function(Identifier functionId) {
         return new FunctionCommandAction(functionId);

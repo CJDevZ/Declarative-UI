@@ -31,7 +31,7 @@ public class SimpleGui extends eu.pb4.sgui.api.gui.SimpleGui {
     }
 
     @Override
-    public void onClose() {
+    public void onManualClose() {
         if (this.closeActions != null) {
             for (ClickAction closeAction : this.closeActions) {
                 try {

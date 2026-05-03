@@ -6,7 +6,7 @@ import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
-import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -24,8 +24,8 @@ public record OpenMenuClickAction(ResourceKey<Menu> menu) implements ClickAction
     }
 
     @Override
-    public void click(Menu thisMenu, SlotGuiInterface slotGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
-        ServerPlayer serverPlayer = slotGui.getPlayer();
+    public void click(Menu thisMenu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
+        ServerPlayer serverPlayer = slotBasedGui.getPlayer();
         Registry<Menu> MENU_REGISTRY = serverPlayer.registryAccess().lookupOrThrow(DeclarativeUIRegistries.MENU);
         Menu menu = MENU_REGISTRY.getValueOrThrow(this.menu);
         menu.open(serverPlayer.createCommandSourceStack(), Collections.singletonList(serverPlayer));

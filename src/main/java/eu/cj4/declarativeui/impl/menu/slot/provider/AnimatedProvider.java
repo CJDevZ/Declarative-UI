@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
 import eu.pb4.sgui.api.elements.AnimatedGuiElement;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.elements.GuiElement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +26,7 @@ public record AnimatedProvider(List<SimpleProvider> providers, int interval, boo
     }
 
     @Override
-    public GuiElementInterface createElement(CommandSourceStack source, GuiElementInterface.ClickCallback clickCallback) {
+    public GuiElement createElement(CommandSourceStack source, GuiElement.ClickCallback clickCallback) {
         ItemStack[] itemStacks = new ItemStack[this.providers.size()];
         for (int i = 0; i < this.providers.size(); i++) {
             itemStacks[i] = this.providers.get(i).createStack(source);
