@@ -6,7 +6,7 @@ import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.ClickEvent;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.elements.GuiElement;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,6 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
-import java.util.Optional;
 
 public class SearchGui extends eu.pb4.sgui.api.gui.AnvilInputGui {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -47,14 +46,14 @@ public class SearchGui extends eu.pb4.sgui.api.gui.AnvilInputGui {
     @Override
     public void setDefaultInputValue(String input) {
         super.setDefaultInputValue(input);
-        GuiElementInterface.ClickCallback searchCallback = this.searchActions == null ? GuiElementInterface.EMPTY_CALLBACK : new DeclaredSlot.SlotCallback(this.menu, this.searchActions, this::getSearchTag);
+        GuiElement.ClickCallback searchCallback = this.searchActions == null ? GuiElement.EMPTY_CALLBACK : new DeclaredSlot.SlotCallback(this.menu, this.searchActions, this::getSearchTag);
         ItemStack searchItem = Items.PAPER.getDefaultInstance();
         searchItem.set(DataComponents.CUSTOM_NAME, Component.literal("Search..."));
         this.setSlot(2, searchItem, searchCallback);
     }
 
     @Override
-    public void onClose() {
+    public void onManualClose() {
         if (this.closeActions != null) {
             for (ClickAction closeAction : this.closeActions) {
                 try {

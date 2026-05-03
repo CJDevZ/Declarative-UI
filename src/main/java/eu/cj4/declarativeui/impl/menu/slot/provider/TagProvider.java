@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
 import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
 import eu.pb4.sgui.api.elements.AnimatedGuiElement;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.elements.GuiElement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +31,7 @@ public record TagProvider(TagKey<Item> tag, int interval, boolean random) implem
     }
 
     @Override
-    public GuiElementInterface createElement(CommandSourceStack source, GuiElementInterface.ClickCallback clickCallback) {
+    public GuiElement createElement(CommandSourceStack source, GuiElement.ClickCallback clickCallback) {
         List<ItemStack> itemStacks = new ArrayList<>();
         for (Holder<Item> itemHolder : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) {
             itemStacks.add(new ItemStack(itemHolder));

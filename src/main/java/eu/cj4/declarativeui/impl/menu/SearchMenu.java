@@ -69,7 +69,7 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
                 Container container = declaredContainer.provider().getContainer(sourceStack.getEntity());
                 if (container == null) continue;
                 for (DeclaredRedirect redirect : declaredContainer.redirects()) {
-                    gui.setSlotRedirect(redirect.slot(), redirect.viewOnly().orElse(viewOnly)
+                    gui.setSlot(redirect.slot(), redirect.viewOnly().orElse(viewOnly)
                             ? new LockedSlot(container, redirect.containerSlot(), 0, 0)
                             : new Slot(container, redirect.containerSlot(), 0, 0)
                     );
