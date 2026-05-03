@@ -8,13 +8,13 @@ import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
 import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 public interface CommandAction extends Command<CommandSourceStack> {
     CommandActionType getType();
 
-    static FunctionCommandAction function(ResourceLocation functionId) {
+    static FunctionCommandAction function(Identifier functionId) {
         return new FunctionCommandAction(functionId);
     }
 
@@ -22,7 +22,7 @@ public interface CommandAction extends Command<CommandSourceStack> {
         return new OpenMenuCommandAction(menu);
     }
     
-    static CommandActionType register(ResourceLocation id, MapCodec<? extends CommandAction> mapCodec) {
+    static CommandActionType register(Identifier id, MapCodec<? extends CommandAction> mapCodec) {
         return Registry.register(DeclarativeUIBuiltInRegistries.COMMAND_ACTION_TYPE, id, new CommandActionType(mapCodec));
     }
 }

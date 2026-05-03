@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctions;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
@@ -40,7 +40,7 @@ public record SimpleProvider(ItemStack item, Optional<LootItemFunction> itemModi
         return new SimpleProvider(new ItemStack(holder), Optional.empty());
     }
 
-    public @NotNull ItemStack createStack(CommandSourceStack source) {
+    public @NonNull ItemStack createStack(CommandSourceStack source) {
         if (itemModifier.isPresent()) {
             ServerLevel serverLevel = source.getLevel();
             LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, source.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, source.getEntity()).create(LootContextParamSets.COMMAND);

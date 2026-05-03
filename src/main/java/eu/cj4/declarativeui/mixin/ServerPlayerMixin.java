@@ -6,8 +6,8 @@ import eu.cj4.declarativeui.impl.container.DeclaredContainer;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.container.PlayerContainer;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +31,7 @@ import java.util.Optional;
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player implements NamespacedContainerHolder {
     @Unique
-    private HashMap<ResourceLocation, PlayerContainer> declarative_ui$containers;
+    private Map<Identifier, PlayerContainer> declarative_ui$containers;
 
     public ServerPlayerMixin(Level level, GameProfile gameProfile) {
         super(level, gameProfile);
@@ -44,7 +44,7 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
 
     @Unique
     @Override
-    public Container declarative_ui$namespacedContainer(ResourceLocation containerLocation) {
+    public Container declarative_ui$namespacedContainer(Identifier containerLocation) {
         DeclaredContainer declaredContainer = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER).getValue(containerLocation);
         if (declaredContainer == null) {
             return null;
@@ -57,21 +57,26 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
         ValueInput containers = valueInput.childOrEmpty("declarative_ui_containers");
         Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER);
         for (Map.Entry<ResourceKey<DeclaredContainer>, DeclaredContainer> entry : containerRegistry.entrySet()) {
-            Optional<ValueInput.TypedInputList<ItemStackWithSlot>> slots = containers.list(entry.getKey().location().toString(), ItemStackWithSlot.CODEC);
+            Optional<ValueInput.TypedInputList<ItemStackWithSlot>> slots = containers.list(entry.getKey().identifier().toString(), ItemStackWithSlot.CODEC);
             if (slots.isEmpty()) continue;
             PlayerContainer playerContainer = new PlayerContainer(entry.getValue().size());
             playerContainer.fromSlots(slots.get());
-            declarative_ui$containers.put(entry.getKey().location(), playerContainer);
+            declarative_ui$containers.put(entry.getKey().identifier(), playerContainer);
         }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void saveContainers(ValueOutput valueOutput, CallbackInfo ci) {
         ValueOutput containers = valueOutput.child("declarative_ui_containers");
-        for (Map.Entry<ResourceLocation, PlayerContainer> entry : declarative_ui$containers.entrySet()) {
+        for (Map.Entry<Identifier, PlayerContainer> entry : declarative_ui$containers.entrySet()) {
             PlayerContainer playerContainer = entry.getValue();
             if (playerContainer.isEmpty()) continue;
             playerContainer.storeAsSlots(containers.list(entry.getKey().toString(), ItemStackWithSlot.CODEC));
         }
+    }
+
+    @Inject(method = "restoreFrom", at = @At("TAIL"))
+    private void restoreContainers(ServerPlayer serverPlayer, boolean alive, CallbackInfo ci) {
+        declarative_ui$containers = new HashMap<>(((ServerPlayerMixin) (Object) serverPlayer).declarative_ui$containers);
     }
 }
