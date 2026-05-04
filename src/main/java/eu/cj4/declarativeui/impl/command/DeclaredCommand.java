@@ -43,14 +43,14 @@ public record DeclaredCommand(Optional<CommandAction> action, List<Node> nodes, 
     }
 
     public record Node(String name, Optional<CommandArgument<?>> argumentType, Optional<CommandAction> action, List<Node> nodes, Optional<Integer> permissionLevel) {
-        public static final Codec<Node> CODEC = RecordCodecBuilder.create(instance ->
+        public static final Codec<Node> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codec.STRING.fieldOf("name").forGetter(Node::name),
                         CommandArgumentTypes.TYPED_CODEC.optionalFieldOf("argument").forGetter(Node::argumentType),
                         CommandActionTypes.TYPED_CODEC.optionalFieldOf("action").forGetter(Node::action),
                         Codec.list(Node.CODEC).optionalFieldOf("nodes", Collections.emptyList()).forGetter(Node::nodes),
                         Codec.INT.optionalFieldOf("permission_level").forGetter(Node::permissionLevel)
-                ).apply(instance, Node::new));
+                ).apply(instance, Node::new)));
 
         @SuppressWarnings("unchecked")
         public <T extends ArgumentBuilder<CommandSourceStack, T>> T register(CommandBuildContext buildContext) {
