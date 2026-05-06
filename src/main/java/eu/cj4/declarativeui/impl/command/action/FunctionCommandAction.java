@@ -57,7 +57,7 @@ public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandli
             }
 
             CommandSourceStack commandSourceStack2 = sourceStack.withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
-            FunctionCommand.queueFunctions(Collections.singletonList(function.get()), compoundTag, sourceStack, commandSourceStack2, executionControl, null, chainModifiers);
+            FunctionCommand.queueFunctions(Collections.singletonList(function.get()), compoundTag, sourceStack, commandSourceStack2, executionControl, (source, identifier, result) -> {}, chainModifiers);
         }
     }
 }
