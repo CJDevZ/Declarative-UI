@@ -2,7 +2,7 @@
 A data-driven UI mod for Minecraft using Fabric.
 
 Ever wanted to create a menu in your datapack and had enough of writing a mess of a code for it?\
-Would you like something more intuitive and complete than `/trigger?`\
+Would you like something more intuitive and complete than `/trigger`?\
 Declarative UI brings the familiar features of large server networks into simple, lightweight datapacks.
 
 ## ✅ Features
