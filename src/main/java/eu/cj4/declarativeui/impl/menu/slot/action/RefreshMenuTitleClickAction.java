@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.ResolutionContext;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.LevelBasedPermissionSet;
 import org.jspecify.annotations.Nullable;
 
 public record RefreshMenuTitleClickAction() implements ClickAction {
@@ -26,7 +25,7 @@ public record RefreshMenuTitleClickAction() implements ClickAction {
     @Override
     public void click(Menu menu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
         ServerPlayer serverPlayer = slotBasedGui.getPlayer();
-        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
+        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
         slotBasedGui.setTitle(ComponentUtils.resolve(ResolutionContext.create(commandSourceStack), menu.title().orElse(menu.getDefaultTitle(serverPlayer.registryAccess()))));
         slotBasedGui.open();
     }
