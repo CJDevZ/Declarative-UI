@@ -10,7 +10,6 @@ import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.LevelBasedPermissionSet;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
@@ -26,7 +25,7 @@ public record RefreshMenuClickAction() implements ClickAction {
     @Override
     public void click(Menu menu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
         ServerPlayer serverPlayer = slotBasedGui.getPlayer();
-        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
+        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
         menu.open(commandSourceStack, Collections.singleton(serverPlayer));
     }
 }
