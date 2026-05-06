@@ -16,6 +16,7 @@ import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.commands.FunctionCommand;
+import net.minecraft.server.permissions.LevelBasedPermissionSet;
 
 import java.util.Collections;
 import java.util.Map;
@@ -42,7 +43,6 @@ public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandli
     @Override
     @SuppressWarnings("unchecked")
     protected void runGuarded(CommandSourceStack sourceStack, ContextChain<CommandSourceStack> contextChain, ChainModifiers chainModifiers, ExecutionControl<CommandSourceStack> executionControl) throws CommandSyntaxException {
-        sourceStack = sourceStack.withSuppressedOutput();
         CommandContext<CommandSourceStack> commandContext = contextChain.getTopContext().copyFor(sourceStack);
         Optional<CommandFunction<CommandSourceStack>> function = sourceStack.getServer().getFunctions().get(this.function);
         if (function.isPresent()) {
@@ -56,7 +56,7 @@ public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandli
                 }
             }
 
-            CommandSourceStack commandSourceStack2 = FunctionCommand.modifySenderForExecution(sourceStack);
+            CommandSourceStack commandSourceStack2 = sourceStack.withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
             FunctionCommand.queueFunctions(Collections.singletonList(function.get()), compoundTag, sourceStack, commandSourceStack2, executionControl, null, chainModifiers);
         }
     }

@@ -40,14 +40,14 @@ public record FunctionClickAction(Identifier function) implements ClickAction {
             ProfilerFiller profilerFiller = Profiler.get();
             profilerFiller.push(() -> "function " + commandFunction.id());
 
-            CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack().withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
-            LOGGER.info("Clicking command function");
+            CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
+            CommandSourceStack commandSourceStack2 = commandSourceStack.withSuppressedOutput().withPermission(LevelBasedPermissionSet.GAMEMASTER);
             try {
                 var instantiatedFunction = commandFunction.instantiate(compoundTag, commandSourceStack.dispatcher());
                 Commands.executeCommandInContext(commandSourceStack, executionContext -> ExecutionContext.queueInitialFunctionCall(
                         executionContext,
                         instantiatedFunction,
-                        commandSourceStack,
+                        commandSourceStack2,
                         CommandResultCallback.EMPTY
                 ));
             } catch (FunctionInstantiationException e) {
