@@ -15,7 +15,7 @@ public final class SlotProviders {
     public static final SlotProviderType ANIMATED;
 
     private static SlotProviderType register(String name, MapCodec<? extends SlotProvider> mapCodec) {
-        return SlotProvider.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return SlotProviderType.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

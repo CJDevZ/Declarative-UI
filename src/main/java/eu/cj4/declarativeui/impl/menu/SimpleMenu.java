@@ -13,6 +13,7 @@ import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
 import eu.cj4.declarativeui.impl.menu.slot.LockedSlot;
+import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -23,11 +24,17 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
@@ -65,7 +72,11 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
         builder.setCloseActions(this.closeActions);
 
         for (DeclaredSlot declaredSlot : this.slots) {
-            builder.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+            ServerLevel serverLevel = sourceStack.getLevel();
+            LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+            LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+
+            builder.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
         }
 
         for (DeclaredContainerProvider declaredContainer : this.containers) {
