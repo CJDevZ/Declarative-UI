@@ -1,5 +1,6 @@
 package eu.cj4.declarativeui.impl.menu;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,6 +19,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,8 +60,8 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }
 
-    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) {
-        Component title = this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess()));
+    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        Component title = ComponentUtils.updateForEntity(sourceStack, this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0);
 
         ServerLevel serverLevel = sourceStack.getLevel();
         LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
