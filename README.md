@@ -15,4 +15,4 @@ Declarative UI brings the familiar features of large server networks into simple
 - Place your JSON files in `data/<namespace>/declarative_ui/(command|menu|container)`
 
 You can also download the .mcdoc and commands.json files for Spyglass here:
-https://cdn.modrinth.com/data/5UTWPtx3/versions/efRCNid9/spyglass.zip
+https://cdn.modrinth.com/data/5UTWPtx3/versions/v9eBhllw/spyglass.zip
