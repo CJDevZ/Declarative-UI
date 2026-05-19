@@ -13,7 +13,7 @@ public final class MenuTypes {
     public static final MenuType SIMPLE;
 
     private static MenuType register(String name, MapCodec<? extends Menu> mapCodec) {
-        return Menu.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return MenuType.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

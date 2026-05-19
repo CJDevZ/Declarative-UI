@@ -12,6 +12,7 @@ import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
 import eu.cj4.declarativeui.impl.menu.slot.LockedSlot;
+import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
 import net.minecraft.Util;
@@ -25,10 +26,17 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.storage.loot.IntRange;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -66,7 +74,14 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
         builder.setTitle(ComponentUtils.updateForEntity(sourceStack, title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0));
 
         for (DeclaredSlot declaredSlot : this.slots) {
-            builder.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+            NumberProvider slot = declaredSlot.slot();
+            GuiElementInterface guiElement = declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this));
+
+            ServerLevel serverLevel = sourceStack.getLevel();
+            LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+            LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+
+            builder.setSlot(slot.getInt(lootContext), guiElement);
         }
 
         for (DeclaredContainerProvider declaredContainer : this.containers) {
