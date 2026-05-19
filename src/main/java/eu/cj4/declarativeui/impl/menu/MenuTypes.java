@@ -14,7 +14,7 @@ public final class MenuTypes {
     public static final MenuType SEARCH;
 
     private static MenuType register(String name, MapCodec<? extends Menu> mapCodec) {
-        return Menu.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return MenuType.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

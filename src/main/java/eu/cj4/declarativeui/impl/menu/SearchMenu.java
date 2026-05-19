@@ -19,10 +19,15 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -61,7 +66,11 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
             gui.setLockPlayerInventory(this.lockPlayerInventory);
 
             for (DeclaredSlot declaredSlot : this.slots) {
-                gui.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+                ServerLevel serverLevel = sourceStack.getLevel();
+                LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+                LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+
+                gui.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
             }
 
             for (DeclaredContainerProvider declaredContainer : this.containers) {

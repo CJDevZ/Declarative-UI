@@ -12,6 +12,8 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,10 +24,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /// TODO: Add Click Type Predicates and Saved/maybe Temporary Inventories
-public record DeclaredSlot(int slot, SlotProvider provider, List<ClickEvent> clickEvents) {
+public record DeclaredSlot(NumberProvider slot, SlotProvider provider, List<ClickEvent> clickEvents) {
     public static final Codec<DeclaredSlot> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codec.INT.fieldOf("slot").forGetter(DeclaredSlot::slot),
+                    NumberProviders.CODEC.fieldOf("slot").forGetter(DeclaredSlot::slot),
                     SlotProviders.TYPED_CODEC.fieldOf("provider").forGetter(DeclaredSlot::provider),
                     ClickEvent.LIST_CODEC.optionalFieldOf("click_event", Collections.emptyList()).forGetter(DeclaredSlot::clickEvents)
             ).apply(instance, DeclaredSlot::new));
