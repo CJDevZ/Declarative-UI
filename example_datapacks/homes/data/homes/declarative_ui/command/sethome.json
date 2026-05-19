@@ -1,0 +1,6 @@
+{
+    "action": {
+        "type": "declarative_ui:function",
+        "function": "homes:sethome"
+    }
+}

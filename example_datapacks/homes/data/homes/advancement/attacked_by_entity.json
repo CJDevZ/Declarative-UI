@@ -1,0 +1,10 @@
+{
+  "criteria": {
+    "attacked": {
+      "trigger": "minecraft:entity_hurt_player"
+    }
+  },
+  "rewards": {
+    "function": "homes:attacked_by_entity"
+  }
+}
