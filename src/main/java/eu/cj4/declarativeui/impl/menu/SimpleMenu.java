@@ -71,11 +71,11 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
         builder.setTitle(ComponentUtils.updateForEntity(sourceStack, title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0));
         builder.setCloseActions(this.closeActions);
 
-        for (DeclaredSlot declaredSlot : this.slots) {
-            ServerLevel serverLevel = sourceStack.getLevel();
-            LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
-            LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+        ServerLevel serverLevel = sourceStack.getLevel();
+        LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+        LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
 
+        for (DeclaredSlot declaredSlot : this.slots) {
             builder.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
         }
 
