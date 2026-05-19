@@ -14,7 +14,7 @@ public final class CommandActionTypes {
     public static final CommandActionType OPEN_MENU;
 
     private static CommandActionType register(String name, MapCodec<? extends CommandAction> mapCodec) {
-        return CommandAction.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return CommandActionType.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

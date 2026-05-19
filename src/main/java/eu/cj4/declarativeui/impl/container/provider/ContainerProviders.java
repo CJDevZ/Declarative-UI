@@ -16,7 +16,7 @@ public final class ContainerProviders {
     public static final ContainerProviderType PLAYER_INVENTORY;
 
     private static ContainerProviderType register(String name, MapCodec<? extends ContainerProvider> mapCodec) {
-        return ContainerProvider.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return ContainerProviderType.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {

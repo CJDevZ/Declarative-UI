@@ -17,7 +17,7 @@ public final class ClickActionTypes {
     public static final ClickActionType REFRESH_MENU_TITLE;
 
     private static ClickActionType register(String name, MapCodec<? extends ClickAction> mapCodec) {
-        return ClickAction.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+        return ClickActionType.register(ResourceLocation.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {
