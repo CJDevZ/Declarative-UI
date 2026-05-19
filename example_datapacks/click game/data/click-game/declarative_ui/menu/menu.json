@@ -1,0 +1,70 @@
+{
+  "type": "declarative_ui:simple",
+  "title": "ᴄʟɪᴄᴋ ɢᴀᴍᴇ",
+  "menu_type": "minecraft:generic_9x3",
+  "slots": [
+    {
+      "slot": 11,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": {
+          "id": "minecraft:light_blue_concrete",
+          "components": {
+            "minecraft:item_name": {
+              "text": "ᴇᴀꜱʏ",
+              "color": "blue"
+            }
+          }
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:play/easy"
+        }
+      }
+    },
+    {
+      "slot": 13,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": {
+          "id": "minecraft:orange_concrete",
+          "components": {
+            "minecraft:item_name": {
+              "text": "ᴍᴇᴅɪᴜᴍ",
+              "color": "gold"
+            }
+          }
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:play/medium"
+        }
+      }
+    },
+    {
+      "slot": 15,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": {
+          "id": "minecraft:red_concrete",
+          "components": {
+            "minecraft:item_name": {
+              "text": "ʜᴀʀᴅ",
+              "color": "red"
+            }
+          }
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:play/hard"
+        }
+      }
+    }
+  ]
+}

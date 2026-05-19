@@ -1,0 +1,775 @@
+{
+  "type": "declarative_ui:simple",
+  "title": [
+    "ᴄʟɪᴄᴋ ɢᴀᴍᴇ ",
+    {
+      "score": {
+        "name": "@s",
+        "objective": "click-game.counter"
+      }
+    }
+  ],
+  "menu_type": "minecraft:generic_9x3",
+  "slots": [
+    {
+      "slot": 0,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/0"
+        }
+      }
+    },
+    {
+      "slot": 1,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 1
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/1"
+        }
+      }
+    },
+    {
+      "slot": 2,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 2
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/2"
+        }
+      }
+    },
+    {
+      "slot": 3,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 3
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/3"
+        }
+      }
+    },
+    {
+      "slot": 4,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 4
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/4"
+        }
+      }
+    },
+    {
+      "slot": 5,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 5
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/5"
+        }
+      }
+    },
+    {
+      "slot": 6,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 6
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/6"
+        }
+      }
+    },
+    {
+      "slot": 7,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 7
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/7"
+        }
+      }
+    },
+    {
+      "slot": 8,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 8
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/8"
+        }
+      }
+    },
+    {
+      "slot": 9,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 9
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/9"
+        }
+      }
+    },
+    {
+      "slot": 10,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 10
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/10"
+        }
+      }
+    },
+    {
+      "slot": 11,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 11
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/11"
+        }
+      }
+    },
+    {
+      "slot": 12,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 12
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/12"
+        }
+      }
+    },
+    {
+      "slot": 13,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 13
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/13"
+        }
+      }
+    },
+    {
+      "slot": 14,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 14
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/14"
+        }
+      }
+    },
+    {
+      "slot": 15,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 15
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/15"
+        }
+      }
+    },
+    {
+      "slot": 16,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 16
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/16"
+        }
+      }
+    },
+    {
+      "slot": 17,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 17
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/17"
+        }
+      }
+    },
+    {
+      "slot": 18,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 18
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/18"
+        }
+      }
+    },
+    {
+      "slot": 19,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 19
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/19"
+        }
+      }
+    },
+    {
+      "slot": 20,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 20
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/20"
+        }
+      }
+    },
+    {
+      "slot": 21,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 21
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/21"
+        }
+      }
+    },
+    {
+      "slot": 22,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 22
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/22"
+        }
+      }
+    },
+    {
+      "slot": 23,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 23
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/23"
+        }
+      }
+    },
+    {
+      "slot": 24,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 24
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/24"
+        }
+      }
+    },
+    {
+      "slot": 25,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 25
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/25"
+        }
+      }
+    },
+    {
+      "slot": 26,
+      "provider": {
+        "type": "declarative_ui:simple",
+        "item": "minecraft:yellow_concrete",
+        "item_modifier": {
+          "function": "minecraft:discard",
+          "conditions": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:entity_scores",
+                "entity": "this",
+                "scores": {
+                  "click-game.random_slot": 26
+                }
+              }
+            }
+          ]
+        }
+      },
+      "click_event": {
+        "actions": {
+          "type": "declarative_ui:function",
+          "function": "click-game:click/26"
+        }
+      }
+    }
+  ],
+  "close_actions": {
+    "type": "declarative_ui:function",
+    "function": "click-game:stop_playing"
+  }
+}

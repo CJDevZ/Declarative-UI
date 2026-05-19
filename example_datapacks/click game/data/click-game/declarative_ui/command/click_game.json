@@ -1,0 +1,10 @@
+{
+  "nodes": {
+    "play": {
+      "action": {
+        "type": "declarative_ui:open_menu",
+        "menu": "click-game:menu"
+      }
+    }
+  }
+}
