@@ -2,7 +2,6 @@ package eu.cj4.declarativeui.impl.menu.slot.action;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
@@ -14,7 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
 public record RefreshMenuTitleClickAction() implements ClickAction {
-    public static final MapCodec<RefreshMenuTitleClickAction> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new RefreshMenuTitleClickAction()));
+    public static final RefreshMenuTitleClickAction INSTANCE = new RefreshMenuTitleClickAction();
+    public static final MapCodec<RefreshMenuTitleClickAction> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ClickActionType getType() {

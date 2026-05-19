@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.*;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.codec.LazyEnumCodec;
 import eu.cj4.declarativeui.api.command.argument.CommandArgument;
 import eu.cj4.declarativeui.mixin.argument.*;
@@ -56,13 +55,11 @@ public final class CommandArgumentTypes {
 
     public static <T> void registerContextAware(Class<? extends ArgumentType<T>> argumentClass, Function<CommandBuildContext, ArgumentType<T>> function) {
         ArgumentTypeInfo<?, ?> argumentTypeInfo = ArgumentTypeInfosAccessor.getBY_CLASS().get(argumentClass);
-        var mapCodec = RecordCodecBuilder.build(RecordCodecBuilder.stable(new ContextAwareArgument<>(argumentTypeInfo, function)));
-        register(argumentClass, mapCodec);
+        register(argumentClass, MapCodec.unit(new ContextAwareArgument<>(argumentTypeInfo, function)));
     }
 
     public static <T> void registerStable(Class<? extends ArgumentType<T>> argumentClass, ArgumentType<T> argumentType) {
-        var mapCodec = RecordCodecBuilder.build(RecordCodecBuilder.stable(new StableArgument<>(ArgumentTypeInfos.byClass(argumentType), argumentType)));
-        register(argumentClass, mapCodec);
+        register(argumentClass, MapCodec.unit(new StableArgument<>(ArgumentTypeInfos.byClass(argumentType), argumentType)));
     }
 
     public static <T> ArgumentTypeInfo<?, ?> register(Class<? extends ArgumentType<T>> argumentClass, MapCodec<? extends CommandArgument<T>> mapCodec) {

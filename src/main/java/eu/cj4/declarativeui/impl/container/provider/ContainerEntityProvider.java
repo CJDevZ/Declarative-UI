@@ -1,14 +1,14 @@
 package eu.cj4.declarativeui.impl.container.provider;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.container.provider.ContainerProvider;
 import eu.cj4.declarativeui.api.container.provider.ContainerProviderType;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public record ContainerEntityProvider() implements ContainerProvider {
-    public static final MapCodec<ContainerEntityProvider> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new ContainerEntityProvider()));
+    public static final ContainerEntityProvider INSTANCE = new ContainerEntityProvider();
+    public static final MapCodec<ContainerEntityProvider> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ContainerProviderType getType() {

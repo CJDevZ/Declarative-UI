@@ -15,11 +15,11 @@ public interface ContainerProvider {
     Container getContainer(Entity entity);
 
     static ContainerEntityProvider containerEntity() {
-        return new ContainerEntityProvider();
+        return ContainerEntityProvider.INSTANCE;
     }
 
     static EnderChestProvider enderChest() {
-        return new EnderChestProvider();
+        return EnderChestProvider.INSTANCE;
     }
 
     static PlayerContainerProvider playerContainer(ResourceKey<DeclaredContainer> resourceKey) {
@@ -27,6 +27,6 @@ public interface ContainerProvider {
     }
 
     static PlayerInventoryProvider playerInventory() {
-        return new PlayerInventoryProvider();
+        return PlayerInventoryProvider.INSTANCE;
     }
 }

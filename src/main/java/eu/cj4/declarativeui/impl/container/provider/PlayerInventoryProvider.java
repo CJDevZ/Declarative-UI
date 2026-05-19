@@ -1,7 +1,6 @@
 package eu.cj4.declarativeui.impl.container.provider;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.container.provider.ContainerProvider;
 import eu.cj4.declarativeui.api.container.provider.ContainerProviderType;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +8,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public record PlayerInventoryProvider() implements ContainerProvider {
-    public static final MapCodec<PlayerInventoryProvider> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new PlayerInventoryProvider()));
+    public static final PlayerInventoryProvider INSTANCE = new PlayerInventoryProvider();
+    public static final MapCodec<PlayerInventoryProvider> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ContainerProviderType getType() {
