@@ -60,16 +60,17 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
 
     public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) {
         Component title = this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess()));
+
+        ServerLevel serverLevel = sourceStack.getLevel();
+        LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+        LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+
         for (ServerPlayer target : targets) {
             SearchGui gui = new SearchGui(target, this.manipulatePlayerSlots, this, this.searchTag, this.searchActions, this.closeActions);
             gui.setTitle(title);
             gui.setLockPlayerInventory(this.lockPlayerInventory);
 
             for (DeclaredSlot declaredSlot : this.slots) {
-                ServerLevel serverLevel = sourceStack.getLevel();
-                LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
-                LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
-
                 gui.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
             }
 
