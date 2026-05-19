@@ -1,0 +1,16 @@
+{
+	"pack" : {
+		"description" : "Homes by CJDev",
+		"min_format": 88,
+		"max_format": 999
+	},
+	"overlays": {
+		"entries": [
+			{
+				"directory": "26-2-snapshot-3",
+				"min_format": 102,
+				"max_format": 999
+			}
+		]
+	}
+}

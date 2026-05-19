@@ -1,0 +1,18 @@
+{
+  "criteria": {
+    "attacked": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": {
+        "damage": {
+          "blocked": false,
+          "source_entity": {
+            "type": "player"
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "homes:attacked_by_player"
+  }
+}

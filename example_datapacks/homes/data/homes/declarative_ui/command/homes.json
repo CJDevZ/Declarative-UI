@@ -1,0 +1,58 @@
+{
+    "permission_level": "gamemasters",
+    "nodes": {
+        "config": {
+            "nodes": {
+                "delay": {
+                    "nodes": {
+                        "ticks": {
+                            "argument": {
+                                "type": "brigadier:integer",
+                                "min": 0
+                            },
+                            "action": {
+                                "type": "declarative_ui:function",
+                                "function": "homes:config/delay"
+                            }
+                        }
+                    }
+                },
+                "combat_cooldown": {
+                    "nodes": {
+                        "ticks": {
+                            "argument": {
+                                "type": "brigadier:integer",
+                                "min": 0
+                            },
+                            "action": {
+                                "type": "declarative_ui:function",
+                                "function": "homes:config/combat_cooldown"
+                            }
+                        }
+                    }
+                },
+                "damage_cancel": {
+					"nodes": {
+						"enabled": {
+							"argument": {
+								"type": "brigadier:integer",
+                                "min": 0,
+                                "max": 1
+							},
+							"action": {
+								"type": "declarative_ui:function",
+								"function": "homes:config/damage_cancel"
+							}
+						}
+					}
+                }
+            }
+        },
+        "uninstall": {
+            "action": {
+                "type": "declarative_ui:function",
+                "function": "homes:uninstall"
+            }
+        }
+    }
+}
