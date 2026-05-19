@@ -1,5 +1,6 @@
 package eu.cj4.declarativeui.impl.menu;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,11 +19,18 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.ResolutionContext;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -53,15 +61,23 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }
 
-    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) {
-        Component title = this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess()));
+    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        Component title = ComponentUtils.resolve(ResolutionContext.create(sourceStack), this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())));
+
+        ServerLevel serverLevel = sourceStack.getLevel();
+        LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
+        LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
+
         for (ServerPlayer target : targets) {
             SearchGui gui = new SearchGui(target, this.manipulatePlayerSlots, this, this.searchTag, this.searchActions, this.closeActions);
+            int size = gui.getSize();
             gui.setTitle(title);
             gui.setLockPlayerInventory(this.lockPlayerInventory);
 
             for (DeclaredSlot declaredSlot : this.slots) {
-                gui.setSlot(declaredSlot.slot(), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+                int slot = declaredSlot.slot().getInt(lootContext);
+                if (size < 0 || slot >= size) continue;
+                gui.setSlot(slot, declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
             }
 
             for (DeclaredContainerProvider declaredContainer : this.containers) {

@@ -1,20 +1,16 @@
 package eu.cj4.declarativeui.api.menu;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.impl.menu.SearchMenu;
 import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.cj4.declarativeui.impl.menu.container.provider.DeclaredContainerProvider;
 import eu.cj4.declarativeui.impl.menu.slot.ClickEvent;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
-import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
@@ -35,9 +31,5 @@ public interface Menu {
 
     static SearchMenu search(@Nullable Component title, @Nullable String searchTag, boolean manipulatePlayerSlots, boolean lockPlayerInventory, List<DeclaredSlot> slots, List<DeclaredContainerProvider> containers, List<ClickEvent> searchActions, List<ClickAction> closeActions) {
         return new SearchMenu(Optional.ofNullable(title), searchTag, manipulatePlayerSlots, lockPlayerInventory, slots, containers, searchActions, closeActions);
-    }
-
-    static MenuType register(Identifier id, MapCodec<? extends Menu> codec) {
-        return Registry.register(DeclarativeUIBuiltInRegistries.MENU_TYPE, id, new MenuType(codec));
     }
 }
