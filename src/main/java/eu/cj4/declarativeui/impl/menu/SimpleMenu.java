@@ -34,7 +34,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;

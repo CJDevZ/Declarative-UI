@@ -13,6 +13,7 @@ public final class SlotProviders {
     public static final SlotProviderType SIMPLE;
     public static final SlotProviderType TAG;
     public static final SlotProviderType ANIMATED;
+    public static final SlotProviderType EMPTY;
 
     private static SlotProviderType register(String name, MapCodec<? extends SlotProvider> mapCodec) {
         return SlotProviderType.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
@@ -26,5 +27,6 @@ public final class SlotProviders {
         SIMPLE = register("simple", SimpleProvider.CODEC);
         TAG = register("tag", TagProvider.CODEC);
         ANIMATED = register("animated", AnimatedProvider.CODEC);
+        EMPTY = register("empty", EmptyProvider.CODEC);
     }
 }
