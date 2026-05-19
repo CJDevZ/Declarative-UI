@@ -7,13 +7,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.impl.menu.container.provider.DeclaredContainerProvider;
-import eu.cj4.declarativeui.impl.menu.gui.SimpleGuiBuilder;
+import eu.cj4.declarativeui.impl.menu.gui.SimpleGui;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredRedirect;
 import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
 import eu.cj4.declarativeui.impl.menu.slot.LockedSlot;
-import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -34,8 +33,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -65,39 +62,38 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
         return Component.translatable(Util.makeDescriptionId("container", guiId));
     }
 
-    public @NonNull SimpleGuiBuilder instantiate(CommandSourceStack sourceStack) throws CommandSyntaxException {
-        MenuType<?> menuType = this.menuType.value();
-        SimpleGuiBuilder builder = new SimpleGuiBuilder(this, menuType, manipulatePlayerSlots);
-        builder.setTitle(ComponentUtils.updateForEntity(sourceStack, title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0));
-        builder.setCloseActions(this.closeActions);
+    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        Component title = ComponentUtils.updateForEntity(sourceStack, this.title.orElseGet(() -> getDefaultTitle(sourceStack.registryAccess())), sourceStack.getEntity(), 0);
 
         ServerLevel serverLevel = sourceStack.getLevel();
         LootParams lootParams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, sourceStack.getPosition()).withOptionalParameter(LootContextParams.THIS_ENTITY, sourceStack.getEntity()).create(LootContextParamSets.COMMAND);
         LootContext lootContext = (new LootContext.Builder(lootParams)).create(Optional.empty());
 
-        for (DeclaredSlot declaredSlot : this.slots) {
-            builder.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
-        }
-
-        for (DeclaredContainerProvider declaredContainer : this.containers) {
-            boolean viewOnly = declaredContainer.viewOnly();
-            Container container = declaredContainer.provider().getContainer(sourceStack.getEntity());
-            if (container == null) continue;
-            for (DeclaredRedirect redirect : declaredContainer.redirects()) {
-                builder.setSlotRedirect(redirect.slot(), redirect.viewOnly().orElse(viewOnly)
-                        ? new LockedSlot(container, redirect.containerSlot(), 0, 0)
-                        : new Slot(container, redirect.containerSlot(), 0, 0)
-                );
-            }
-        }
-
-        return builder;
-    }
-
-    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
-        SimpleGuiBuilder builder = instantiate(sourceStack);
+        MenuType<?> menuType = this.menuType.value();
         for (ServerPlayer target : targets) {
-            builder.build(target).open();
+            SimpleGui gui = new SimpleGui(this, menuType, target, manipulatePlayerSlots, this.closeActions);
+            int size = gui.getSize();
+            gui.setTitle(title);
+
+            for (DeclaredSlot declaredSlot : this.slots) {
+                int slot = declaredSlot.slot().getInt(lootContext);
+                if (size < 0 || slot >= size) continue;
+                gui.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+            }
+
+            for (DeclaredContainerProvider declaredContainer : this.containers) {
+                boolean viewOnly = declaredContainer.viewOnly();
+                Container container = declaredContainer.provider().getContainer(sourceStack.getEntity());
+                if (container == null) continue;
+                for (DeclaredRedirect redirect : declaredContainer.redirects()) {
+                    gui.setSlotRedirect(redirect.slot(), redirect.viewOnly().orElse(viewOnly)
+                            ? new LockedSlot(container, redirect.containerSlot(), 0, 0)
+                            : new Slot(container, redirect.containerSlot(), 0, 0)
+                    );
+                }
+            }
+
+            gui.open();
         }
     }
 }

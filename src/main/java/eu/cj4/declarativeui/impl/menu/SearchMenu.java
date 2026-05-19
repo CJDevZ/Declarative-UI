@@ -69,11 +69,14 @@ public record SearchMenu(Optional<Component> title, String searchTag, boolean ma
 
         for (ServerPlayer target : targets) {
             SearchGui gui = new SearchGui(target, this.manipulatePlayerSlots, this, this.searchTag, this.searchActions, this.closeActions);
+            int size = gui.getSize();
             gui.setTitle(title);
             gui.setLockPlayerInventory(this.lockPlayerInventory);
 
             for (DeclaredSlot declaredSlot : this.slots) {
-                gui.setSlot(declaredSlot.slot().getInt(lootContext), declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
+                int slot = declaredSlot.slot().getInt(lootContext);
+                if (size < 0 || slot >= size) continue;
+                gui.setSlot(slot, declaredSlot.createElement(sourceStack, declaredSlot.clickCallback(this)));
             }
 
             for (DeclaredContainerProvider declaredContainer : this.containers) {
