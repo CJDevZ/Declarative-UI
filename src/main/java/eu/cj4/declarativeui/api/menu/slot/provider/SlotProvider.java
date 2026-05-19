@@ -1,6 +1,7 @@
 package eu.cj4.declarativeui.api.menu.slot.provider;
 
 import eu.cj4.declarativeui.impl.menu.slot.provider.AnimatedProvider;
+import eu.cj4.declarativeui.impl.menu.slot.provider.EmptyProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SimpleProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.TagProvider;
 import eu.pb4.sgui.api.elements.GuiElement;
@@ -19,6 +20,10 @@ public interface SlotProvider {
     SlotProviderType getType();
 
     GuiElement createElement(CommandSourceStack source, GuiElement.ClickCallback clickCallback);
+
+    static @NonNull EmptyProvider empty() {
+        return EmptyProvider.INSTANCE;
+    }
 
     static @NonNull SimpleProvider simple(@Nullable ItemStackTemplate template) {
         return new SimpleProvider(Optional.ofNullable(template), Optional.empty());

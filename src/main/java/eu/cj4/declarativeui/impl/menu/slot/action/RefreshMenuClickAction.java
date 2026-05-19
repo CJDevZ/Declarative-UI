@@ -2,7 +2,6 @@ package eu.cj4.declarativeui.impl.menu.slot.action;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
@@ -15,7 +14,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Collections;
 
 public record RefreshMenuClickAction() implements ClickAction {
-    public static final MapCodec<RefreshMenuClickAction> CODEC = RecordCodecBuilder.build(RecordCodecBuilder.stable(new RefreshMenuClickAction()));
+    public static final RefreshMenuClickAction INSTANCE = new RefreshMenuClickAction();
+    public static final MapCodec<RefreshMenuClickAction> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ClickActionType getType() {
