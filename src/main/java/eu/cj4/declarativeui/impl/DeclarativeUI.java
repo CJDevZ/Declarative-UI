@@ -6,6 +6,7 @@ import eu.cj4.declarativeui.impl.command.action.CommandActionTypes;
 import eu.cj4.declarativeui.impl.command.DeclarativeUICommand;
 import eu.cj4.declarativeui.impl.command.ItemCommands;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
+import eu.cj4.declarativeui.impl.customclickaction.DeclaredCustomClickAction;
 import eu.cj4.declarativeui.impl.menu.MenuTypes;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
@@ -31,6 +32,7 @@ public class DeclarativeUI implements ModInitializer {
         DynamicRegistries.register(DeclarativeUIRegistries.MENU, MenuTypes.TYPED_CODEC);
         DynamicRegistries.register(DeclarativeUIRegistries.CONTAINER, DeclaredContainer.CODEC);
         DynamicRegistries.register(DeclarativeUIRegistries.COMMAND, DeclaredCommand.CODEC);
+        DynamicRegistries.register(DeclarativeUIRegistries.CUSTOM_CLICK_ACTION, DeclaredCustomClickAction.CODEC);
 
         SlotProviders.bootStrap();
         ContainerProviders.bootStrap();

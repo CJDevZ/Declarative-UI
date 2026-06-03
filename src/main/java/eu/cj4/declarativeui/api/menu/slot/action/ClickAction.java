@@ -1,10 +1,10 @@
 package eu.cj4.declarativeui.api.menu.slot.action;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
-import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.menu.slot.action.CloseMenuClickAction;
+import eu.cj4.declarativeui.impl.menu.slot.action.FunctionClickAction;
+import eu.cj4.declarativeui.impl.menu.slot.action.OpenMenuClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.action.RefreshMenuClickAction;
 import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.nbt.CompoundTag;
@@ -20,12 +20,12 @@ public interface ClickAction {
     }
     void click(Menu menu, SlotBasedGui slotGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException;
 
-    static FunctionCommandAction function(Identifier functionId) {
-        return new FunctionCommandAction(functionId);
+    static FunctionClickAction function(Identifier functionId) {
+        return new FunctionClickAction(functionId);
     }
 
-    static OpenMenuCommandAction openMenu(ResourceKey<Menu> menu) {
-        return new OpenMenuCommandAction(menu);
+    static OpenMenuClickAction openMenu(ResourceKey<Menu> menu) {
+        return new OpenMenuClickAction(menu);
     }
 
     static CloseMenuClickAction closeMenu() {
