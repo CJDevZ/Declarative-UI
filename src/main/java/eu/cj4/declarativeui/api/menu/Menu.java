@@ -2,6 +2,7 @@ package eu.cj4.declarativeui.api.menu;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.impl.menu.BookMenu;
 import eu.cj4.declarativeui.impl.menu.SearchMenu;
 import eu.cj4.declarativeui.impl.menu.SimpleMenu;
 import eu.cj4.declarativeui.impl.menu.container.provider.DeclaredContainerProvider;
@@ -31,5 +32,9 @@ public interface Menu {
 
     static SearchMenu search(@Nullable Component title, @Nullable String searchTag, boolean manipulatePlayerSlots, boolean lockPlayerInventory, List<DeclaredSlot> slots, List<DeclaredContainerProvider> containers, List<ClickEvent> searchActions, List<ClickAction> closeActions) {
         return new SearchMenu(Optional.ofNullable(title), searchTag, manipulatePlayerSlots, lockPlayerInventory, slots, containers, searchActions, closeActions);
+    }
+
+    static BookMenu book(List<Component> pages) {
+        return new BookMenu(pages);
     }
 }

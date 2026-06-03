@@ -8,6 +8,7 @@ import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
 import eu.cj4.declarativeui.api.container.provider.ContainerProviderType;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.MenuType;
+import eu.cj4.declarativeui.impl.customclickaction.DeclaredCustomClickAction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -24,4 +25,5 @@ public final class DeclarativeUIRegistries {
     public static final ResourceKey<Registry<Menu>> MENU = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "menu"));
     public static final ResourceKey<Registry<DeclaredContainer>> CONTAINER = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "container"));
     public static final ResourceKey<Registry<DeclaredCommand>> COMMAND = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "command"));
+    public static final ResourceKey<Registry<DeclaredCustomClickAction>> CUSTOM_CLICK_ACTION = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "custom_click_action"));
 }
