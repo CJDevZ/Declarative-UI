@@ -1,5 +1,6 @@
 package eu.cj4.declarativeui.impl.menu;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.MenuType;
@@ -9,29 +10,28 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.ResolutionContext;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public record BookMenu(WrittenBookContent content) implements Menu {
+public record BookMenu(List<Component> pages) implements Menu {
     public static final MapCodec<BookMenu> CODEC = WrittenBookContent.CONTENT_CODEC.sizeLimitedListOf(100).fieldOf("pages").xmap(
             BookMenu::new,
-            book -> book.content.pages().stream().map(Filterable::raw).toList()
+            BookMenu::pages
     );
 
-    public BookMenu(List<Component> content) {
-        List<Filterable<Component>> list = new ArrayList<>(content.size());
-        for (Component component : content) {
-            list.add(Filterable.passThrough(component));
+    private static List<Filterable<Component>> convertToFilterable(List<Component> pages, CommandSourceStack sourceStack) throws CommandSyntaxException {
+        List<Filterable<Component>> list = new ArrayList<>(pages.size());
+        for (Component component : pages) {
+            list.add(Filterable.passThrough(ComponentUtils.resolve(ResolutionContext.create(sourceStack), component)));
         }
-        this(new WrittenBookContent(Filterable.passThrough(""), "", 0, list, true));
+        return Collections.unmodifiableList(list);
     }
 
     @Override
@@ -50,8 +50,9 @@ public record BookMenu(WrittenBookContent content) implements Menu {
     }
 
     @Override
-    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) {
-        ItemStack book = new ItemStack(Items.WRITTEN_BOOK.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.WRITTEN_BOOK_CONTENT, this.content).build());
+    public void open(CommandSourceStack sourceStack, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        List<Filterable<Component>> filterables = convertToFilterable(this.pages, sourceStack);
+        ItemStack book = new ItemStack(Items.WRITTEN_BOOK.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(Filterable.passThrough(""), "", 0, filterables, true)).build());
         for (ServerPlayer target : targets) {
             new BookGui(target, book).open();
         }
