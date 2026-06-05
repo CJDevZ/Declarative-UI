@@ -27,6 +27,6 @@ public final class SlotProviders {
         SIMPLE = register("simple", SimpleProvider.CODEC);
         TAG = register("tag", TagProvider.CODEC);
         ANIMATED = register("animated", AnimatedProvider.CODEC);
-        EMPTY = register("animated", EmptyProvider.CODEC);
+        EMPTY = register("empty", EmptyProvider.CODEC);
     }
 }
