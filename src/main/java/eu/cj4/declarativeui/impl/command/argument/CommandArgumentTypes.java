@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.codec.LazyEnumCodec;
-import eu.cj4.declarativeui.api.command.argument.CommandArgument;
+import eu.cj4.declarativeui.api.command.CommandArgument;
 import eu.cj4.declarativeui.mixin.argument.*;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.arguments.*;

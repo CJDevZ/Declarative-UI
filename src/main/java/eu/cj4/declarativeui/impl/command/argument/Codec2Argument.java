@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.command.argument.CommandArgument;
+import eu.cj4.declarativeui.api.command.CommandArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 
