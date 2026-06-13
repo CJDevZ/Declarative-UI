@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.command.action;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
-import eu.cj4.declarativeui.api.command.action.CommandAction;
-import eu.cj4.declarativeui.api.command.action.CommandActionType;
+import eu.cj4.declarativeui.api.command.CommandAction;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import net.minecraft.commands.CommandSourceStack;
@@ -18,8 +17,8 @@ public record OpenMenuCommandAction(ResourceKey<Menu> menu) implements CommandAc
     public static final MapCodec<OpenMenuCommandAction> MAP_CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU).fieldOf("menu").xmap(OpenMenuCommandAction::new, OpenMenuCommandAction::menu);
 
     @Override
-    public CommandActionType getType() {
-        return CommandActionTypes.OPEN_MENU;
+    public MapCodec<OpenMenuCommandAction> codec() {
+        return MAP_CODEC;
     }
 
     @Override

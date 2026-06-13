@@ -3,7 +3,7 @@ package eu.cj4.declarativeui.impl.menu.gui;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.slf4j.Logger;

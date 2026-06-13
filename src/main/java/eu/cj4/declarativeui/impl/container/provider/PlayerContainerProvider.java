@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.container.provider;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.container.NamespacedContainerHolder;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
-import eu.cj4.declarativeui.api.container.provider.ContainerProvider;
-import eu.cj4.declarativeui.api.container.provider.ContainerProviderType;
+import eu.cj4.declarativeui.api.container.ContainerProvider;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Container;
@@ -14,8 +13,8 @@ public record PlayerContainerProvider(ResourceKey<DeclaredContainer> container) 
     public static final MapCodec<PlayerContainerProvider> MAP_CODEC = ResourceKey.codec(DeclarativeUIRegistries.CONTAINER).fieldOf("container").xmap(PlayerContainerProvider::new, PlayerContainerProvider::container);
 
     @Override
-    public ContainerProviderType getType() {
-        return ContainerProviders.PLAYER_CONTAINER;
+    public MapCodec<PlayerContainerProvider> codec() {
+        return MAP_CODEC;
     }
 
     @Override

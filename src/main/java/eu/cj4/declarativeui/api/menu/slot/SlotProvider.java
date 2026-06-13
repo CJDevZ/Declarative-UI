@@ -1,5 +1,6 @@
-package eu.cj4.declarativeui.api.menu.slot.provider;
+package eu.cj4.declarativeui.api.menu.slot;
 
+import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.impl.menu.slot.provider.AnimatedProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.EmptyProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SimpleProvider;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SlotProvider {
-    SlotProviderType getType();
+    MapCodec<? extends SlotProvider> codec();
 
     GuiElementInterface createElement(CommandSourceStack source, GuiElementInterface.ClickCallback clickCallback);
 

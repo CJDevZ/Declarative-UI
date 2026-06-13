@@ -3,15 +3,13 @@ package eu.cj4.declarativeui.impl.menu.slot.action;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandResultCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.FunctionInstantiationException;
 import net.minecraft.commands.execution.ExecutionContext;
-import net.minecraft.commands.functions.MacroFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerFunctionManager;
@@ -28,8 +26,8 @@ public record FunctionClickAction(Identifier function) implements ClickAction {
     public static final MapCodec<FunctionClickAction> MAP_CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionClickAction::new, FunctionClickAction::function);
 
     @Override
-    public ClickActionType getType() {
-        return ClickActionTypes.FUNCTION;
+    public MapCodec<FunctionClickAction> codec() {
+        return MAP_CODEC;
     }
 
     @Override

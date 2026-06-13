@@ -4,8 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.Slot;
-import eu.cj4.declarativeui.api.menu.slot.SlotType;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SlotProviders;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
@@ -29,8 +28,8 @@ public record FillSlots(InclusiveRange<Integer> range, SlotProvider provider, Li
             ).apply(instance, FillSlots::new));
 
     @Override
-    public SlotType getType() {
-        return SlotTypes.FILL;
+    public MapCodec<FillSlots> codec() {
+        return MAP_CODEC;
     }
 
     @Override

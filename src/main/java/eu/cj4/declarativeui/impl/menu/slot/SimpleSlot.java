@@ -4,8 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.Slot;
-import eu.cj4.declarativeui.api.menu.slot.SlotType;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SlotProviders;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
@@ -30,6 +29,11 @@ public record SimpleSlot(NumberProvider slot, SlotProvider provider, List<ClickE
                     ClickEvent.LIST_CODEC.optionalFieldOf("click_event", Collections.emptyList()).forGetter(SimpleSlot::clickEvents)
             ).apply(instance, SimpleSlot::new));
 
+    @Override
+    public MapCodec<SimpleSlot> codec() {
+        return MAP_CODEC;
+    }
+
     public GuiElementInterface createElement(CommandSourceStack source, GuiElementInterface.ClickCallback clickCallback) {
         return this.provider.createElement(source, clickCallback);
     }
@@ -40,11 +44,6 @@ public record SimpleSlot(NumberProvider slot, SlotProvider provider, List<ClickE
 
     public GuiElementInterface.ClickCallback clickCallback(@NonNull Menu declaredMenu, @Nullable Supplier<CompoundTag> compoundTagFunction) {
         return this.clickEvents.isEmpty() ? GuiElementInterface.EMPTY_CALLBACK : new Callback(declaredMenu, this.clickEvents, compoundTagFunction);
-    }
-
-    @Override
-    public SlotType getType() {
-        return SlotTypes.SIMPLE;
     }
 
     @Override

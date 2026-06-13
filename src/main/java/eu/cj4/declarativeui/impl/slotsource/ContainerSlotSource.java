@@ -27,7 +27,7 @@ public record ContainerSlotSource(LootContextArg<Object> source, Identifier cont
     ).apply(instance, ContainerSlotSource::new));
 
     @Override
-    public @NonNull MapCodec<? extends SlotSource> codec() {
+    public @NonNull MapCodec<ContainerSlotSource> codec() {
         return MAP_CODEC;
     }
 

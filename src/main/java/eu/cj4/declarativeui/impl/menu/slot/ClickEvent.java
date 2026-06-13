@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.codec.LazyEnumCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;

@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.Slot;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.*;
 import eu.cj4.declarativeui.impl.menu.gui.SimpleGui;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
@@ -47,8 +47,8 @@ public record SimpleMenu(Optional<Component> title, Holder<MenuType<?>> menuType
             ).apply(instance, SimpleMenu::new));
 
     @Override
-    public eu.cj4.declarativeui.api.menu.MenuType getType() {
-        return MenuTypes.SIMPLE;
+    public MapCodec<SimpleMenu> codec() {
+        return MAP_CODEC;
     }
 
     public Component getDefaultTitle(RegistryAccess access) {
