@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandling<CommandSourceStack> implements CustomCommandExecutor.CommandAdapter<CommandSourceStack>, CommandAction {
-    public static final MapCodec<FunctionCommandAction> CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
+    public static final MapCodec<FunctionCommandAction> MAP_CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
 
     private final Identifier function;
 

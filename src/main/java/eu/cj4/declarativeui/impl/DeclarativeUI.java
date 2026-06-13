@@ -8,12 +8,14 @@ import eu.cj4.declarativeui.impl.command.ItemCommands;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
 import eu.cj4.declarativeui.impl.customclickaction.DeclaredCustomClickAction;
 import eu.cj4.declarativeui.impl.menu.MenuTypes;
+import eu.cj4.declarativeui.impl.menu.slot.SlotTypes;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.impl.command.argument.CommandArgumentTypes;
 import eu.cj4.declarativeui.impl.container.provider.ContainerProviders;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SlotProviders;
+import eu.cj4.declarativeui.impl.slotsource.ContainerSlotSource;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
@@ -40,7 +42,8 @@ public class DeclarativeUI implements ModInitializer {
         CommandActionTypes.bootStrap();
         ClickActionTypes.bootStrap();
         MenuTypes.bootStrap();
-        //SlotSources.
+        SlotTypes.bootStrap();
+        ContainerSlotSource.bootStrap();
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> {
             DeclarativeUICommand.register(dispatcher);

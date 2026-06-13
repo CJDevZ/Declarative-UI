@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public record RefreshMenuClickAction() implements ClickAction {
     public static final RefreshMenuClickAction INSTANCE = new RefreshMenuClickAction();
-    public static final MapCodec<RefreshMenuClickAction> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<RefreshMenuClickAction> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ClickActionType getType() {

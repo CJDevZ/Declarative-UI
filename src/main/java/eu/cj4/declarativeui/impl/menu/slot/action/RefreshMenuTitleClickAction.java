@@ -14,7 +14,7 @@ import org.jspecify.annotations.Nullable;
 
 public record RefreshMenuTitleClickAction() implements ClickAction {
     public static final RefreshMenuTitleClickAction INSTANCE = new RefreshMenuTitleClickAction();
-    public static final MapCodec<RefreshMenuTitleClickAction> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<RefreshMenuTitleClickAction> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ClickActionType getType() {

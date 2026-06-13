@@ -22,7 +22,7 @@ public final class CommandActionTypes {
 
     static {
         TYPED_CODEC = DeclarativeUIBuiltInRegistries.COMMAND_ACTION_TYPE.byNameCodec().dispatch(CommandAction::getType, CommandActionType::codec);
-        FUNCTION = register("function", FunctionCommandAction.CODEC);
-        OPEN_MENU = register("open_menu", OpenMenuCommandAction.CODEC);
+        FUNCTION = register("function", FunctionCommandAction.MAP_CODEC);
+        OPEN_MENU = register("open_menu", OpenMenuCommandAction.MAP_CODEC);
     }
 }

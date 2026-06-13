@@ -34,9 +34,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public final class ItemCommands {
-    private static final DynamicCommandExceptionType ERROR_INVALID_CONTAINER = new DynamicCommandExceptionType((object) -> Component.literal(String.format("Unknown container: %s", object)));
+import static eu.cj4.declarativeui.impl.container.DeclaredContainer.ERROR_INVALID_CONTAINER;
 
+public final class ItemCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
         var itemCommand = dispatcher.getRoot().getChild("item");
         var modifyCommand = itemCommand.getChild("modify");
@@ -193,7 +193,7 @@ public final class ItemCommands {
     }
 
     private static ItemStack getContainerItem(ServerPlayer player, @NonNull Identifier containerLocation, int slot) throws CommandSyntaxException {
-        Container container = ((NamespacedContainerHolder) player).declarative_ui$namespacedContainer(containerLocation);
+        Container container = NamespacedContainerHolder.of(player).declarative_ui$namespacedContainer(containerLocation);
         if (container == null) {
             throw new IllegalArgumentException("Container cannot be null.");
         }
@@ -208,7 +208,7 @@ public final class ItemCommands {
         Map<Entity, ItemStack> map = Maps.newHashMapWithExpectedSize(collection.size());
 
         for (ServerPlayer player : collection) {
-            Container container = ((NamespacedContainerHolder) player).declarative_ui$namespacedContainer(containerLocation);
+            Container container = NamespacedContainerHolder.of(player).declarative_ui$namespacedContainer(containerLocation);
             if (container == null) continue;
             net.minecraft.world.item.ItemStack stack = container.getItem(slot);
             ItemStack itemStack = ItemCommandsAccessor.callApplyModifier(commandSourceStack, holder, stack.copy());
@@ -235,7 +235,7 @@ public final class ItemCommands {
         List<ServerPlayer> list = Lists.newArrayListWithCapacity(collection.size());
 
         for (ServerPlayer player : collection) {
-            Container container = ((NamespacedContainerHolder) player).declarative_ui$namespacedContainer(containerLocation);
+            Container container = NamespacedContainerHolder.of(player).declarative_ui$namespacedContainer(containerLocation);
             if (container == null || slot < 0 || slot >= container.getContainerSize()) continue;
             ItemStack copy = itemStack.copy();
             container.setItem(slot, copy);

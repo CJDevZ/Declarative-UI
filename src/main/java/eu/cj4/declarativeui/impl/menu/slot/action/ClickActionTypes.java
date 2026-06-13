@@ -30,10 +30,10 @@ public final class ClickActionTypes {
     static {
         TYPED_CODEC = DeclarativeUIBuiltInRegistries.CLICK_ACTION_TYPE.byNameCodec().dispatch(ClickAction::getType, ClickActionType::codec);
         LIST_CODEC = Codec.withAlternative(Codec.list(TYPED_CODEC), TYPED_CODEC, Collections::singletonList);
-        FUNCTION = register("function", FunctionClickAction.CODEC);
-        OPEN_MENU = register("open_menu", OpenMenuClickAction.CODEC);
-        CLOSE_MENU = register("close_menu", CloseMenuClickAction.CODEC);
-        REFRESH_MENU = register("refresh_menu", RefreshMenuClickAction.CODEC);
-        REFRESH_MENU_TITLE = register("refresh_menu_title", RefreshMenuTitleClickAction.CODEC);
+        FUNCTION = register("function", FunctionClickAction.MAP_CODEC);
+        OPEN_MENU = register("open_menu", OpenMenuClickAction.MAP_CODEC);
+        CLOSE_MENU = register("close_menu", CloseMenuClickAction.MAP_CODEC);
+        REFRESH_MENU = register("refresh_menu", RefreshMenuClickAction.MAP_CODEC);
+        REFRESH_MENU_TITLE = register("refresh_menu_title", RefreshMenuTitleClickAction.MAP_CODEC);
     }
 }

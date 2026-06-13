@@ -20,7 +20,7 @@ import net.minecraft.world.item.component.WrittenBookContent;
 import java.util.*;
 
 public record BookMenu(List<Component> pages) implements Menu {
-    public static final MapCodec<BookMenu> CODEC = WrittenBookContent.CONTENT_CODEC.sizeLimitedListOf(100).fieldOf("pages").xmap(
+    public static final MapCodec<BookMenu> MAP_CODEC = WrittenBookContent.CONTENT_CODEC.sizeLimitedListOf(100).fieldOf("pages").xmap(
             BookMenu::new,
             BookMenu::pages
     );

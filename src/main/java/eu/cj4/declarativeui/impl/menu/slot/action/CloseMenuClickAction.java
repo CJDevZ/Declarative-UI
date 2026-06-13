@@ -10,7 +10,7 @@ import org.jspecify.annotations.Nullable;
 
 public record CloseMenuClickAction() implements ClickAction {
     public static final CloseMenuClickAction INSTANCE = new CloseMenuClickAction();
-    public static final MapCodec<CloseMenuClickAction> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<CloseMenuClickAction> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ClickActionType getType() {

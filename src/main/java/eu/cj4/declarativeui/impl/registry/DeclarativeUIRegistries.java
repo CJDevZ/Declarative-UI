@@ -1,5 +1,6 @@
 package eu.cj4.declarativeui.impl.registry;
 
+import eu.cj4.declarativeui.api.menu.slot.SlotType;
 import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
 import eu.cj4.declarativeui.impl.command.DeclaredCommand;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
@@ -21,6 +22,7 @@ public final class DeclarativeUIRegistries {
     public static final ResourceKey<Registry<CommandActionType>> COMMAND_ACTION_TYPE = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "command_action_type"));
     public static final ResourceKey<Registry<ClickActionType>> CLICK_ACTION_TYPE = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "click_action_type"));
     public static final ResourceKey<Registry<MenuType>> MENU_TYPE = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "menu_type"));
+    public static final ResourceKey<Registry<SlotType>> SLOT_TYPE = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "slot_type"));
 
     public static final ResourceKey<Registry<Menu>> MENU = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "menu"));
     public static final ResourceKey<Registry<DeclaredContainer>> CONTAINER = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "container"));

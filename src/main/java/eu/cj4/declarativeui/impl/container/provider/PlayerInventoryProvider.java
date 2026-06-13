@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 
 public record PlayerInventoryProvider() implements ContainerProvider {
     public static final PlayerInventoryProvider INSTANCE = new PlayerInventoryProvider();
-    public static final MapCodec<PlayerInventoryProvider> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<PlayerInventoryProvider> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ContainerProviderType getType() {
