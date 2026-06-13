@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.menu.slot.provider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
@@ -32,8 +31,8 @@ public record SimpleProvider(ItemStack item, Optional<LootItemFunction> itemModi
     ).apply(instance, SimpleProvider::new));
 
     @Override
-    public SlotProviderType getType() {
-        return SlotProviders.SIMPLE;
+    public MapCodec<SimpleProvider> codec() {
+        return MAP_CODEC;
     }
 
     public static SimpleProvider fromHolder(Holder<Item> holder) {

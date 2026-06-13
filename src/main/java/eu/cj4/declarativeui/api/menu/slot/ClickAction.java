@@ -1,8 +1,7 @@
-package eu.cj4.declarativeui.api.menu.slot.action;
+package eu.cj4.declarativeui.api.menu.slot;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import eu.cj4.declarativeui.impl.command.action.FunctionCommandAction;
-import eu.cj4.declarativeui.impl.command.action.OpenMenuCommandAction;
+import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.menu.slot.action.*;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
@@ -12,7 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import org.jspecify.annotations.Nullable;
 
 public interface ClickAction {
-    ClickActionType getType();
+    MapCodec<? extends ClickAction> codec();
 
     default void click(Menu menu, SlotGuiInterface slotGui) throws CommandSyntaxException {
         click(menu, slotGui, null);

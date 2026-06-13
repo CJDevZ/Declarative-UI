@@ -1,5 +1,6 @@
-package eu.cj4.declarativeui.api.container.provider;
+package eu.cj4.declarativeui.api.container;
 
+import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
 import eu.cj4.declarativeui.impl.container.provider.ContainerEntityProvider;
 import eu.cj4.declarativeui.impl.container.provider.EnderChestProvider;
@@ -10,7 +11,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public interface ContainerProvider {
-    ContainerProviderType getType();
+    MapCodec<? extends ContainerProvider> codec();
 
     Container getContainer(Entity entity);
 

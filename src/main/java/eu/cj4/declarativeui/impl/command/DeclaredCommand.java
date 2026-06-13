@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.command.action.CommandAction;
+import eu.cj4.declarativeui.api.command.CommandAction;
 import eu.cj4.declarativeui.api.command.argument.CommandArgument;
 import eu.cj4.declarativeui.impl.command.action.CommandActionTypes;
 import eu.cj4.declarativeui.impl.command.argument.CommandArgumentTypes;

@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.menu.slot.provider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.pb4.sgui.api.elements.AnimatedGuiElement;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
@@ -26,8 +25,8 @@ public record TagProvider(TagKey<Item> tag, int interval, boolean random) implem
     ).apply(instance, TagProvider::new));
 
     @Override
-    public SlotProviderType getType() {
-        return SlotProviders.SIMPLE;
+    public MapCodec<TagProvider> codec() {
+        return MAP_CODEC;
     }
 
     @Override

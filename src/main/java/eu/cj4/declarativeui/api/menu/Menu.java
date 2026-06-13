@@ -1,8 +1,9 @@
 package eu.cj4.declarativeui.api.menu;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.slot.Slot;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.cj4.declarativeui.impl.menu.BookMenu;
 import eu.cj4.declarativeui.impl.menu.SearchMenu;
 import eu.cj4.declarativeui.impl.menu.SimpleMenu;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Menu {
-    MenuType getType();
+    MapCodec<? extends Menu> codec();
 
     Optional<Component> title();
     Component getDefaultTitle(RegistryAccess registryAccess);

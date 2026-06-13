@@ -1,8 +1,7 @@
 package eu.cj4.declarativeui.impl.menu.slot.provider;
 
 import com.mojang.serialization.MapCodec;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
@@ -13,8 +12,8 @@ public record EmptyProvider() implements SlotProvider {
     public static final MapCodec<EmptyProvider> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
-    public SlotProviderType getType() {
-        return SlotProviders.EMPTY;
+    public MapCodec<EmptyProvider> codec() {
+        return MAP_CODEC;
     }
 
     @Override

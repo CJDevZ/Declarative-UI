@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.menu.slot.action;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickActionType;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +16,8 @@ public record RefreshMenuTitleClickAction() implements ClickAction {
     public static final MapCodec<RefreshMenuTitleClickAction> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
-    public ClickActionType getType() {
-        return ClickActionTypes.REFRESH_MENU;
+    public MapCodec<RefreshMenuTitleClickAction> codec() {
+        return MAP_CODEC;
     }
 
     @Override

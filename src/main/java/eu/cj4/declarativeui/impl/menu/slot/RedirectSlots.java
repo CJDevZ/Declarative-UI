@@ -5,8 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.api.menu.slot.Slot;
-import eu.cj4.declarativeui.api.container.provider.ContainerProvider;
-import eu.cj4.declarativeui.api.menu.slot.SlotType;
+import eu.cj4.declarativeui.api.container.ContainerProvider;
 import eu.cj4.declarativeui.impl.container.provider.ContainerProviders;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,8 +23,8 @@ public record RedirectSlots(ContainerProvider provider, List<DeclaredRedirect> r
             ).apply(instance, RedirectSlots::new));
 
     @Override
-    public SlotType getType() {
-        return SlotTypes.REDIRECT;
+    public MapCodec<RedirectSlots> codec() {
+        return MAP_CODEC;
     }
 
     @Override

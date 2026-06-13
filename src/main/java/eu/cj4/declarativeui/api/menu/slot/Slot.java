@@ -2,9 +2,9 @@ package eu.cj4.declarativeui.api.menu.slot;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
-import eu.cj4.declarativeui.api.container.provider.ContainerProvider;
+import com.mojang.serialization.MapCodec;
+import eu.cj4.declarativeui.api.container.ContainerProvider;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
 import eu.cj4.declarativeui.impl.menu.slot.*;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public interface Slot {
-    SlotType getType();
+    MapCodec<? extends Slot> codec();
 
     void build(Menu menu, CommandSourceStack sourceStack, SlotGuiInterface slotGuiInterface, LootContext lootContext);
 
