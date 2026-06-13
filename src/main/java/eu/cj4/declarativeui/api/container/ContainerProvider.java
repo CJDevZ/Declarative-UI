@@ -1,16 +1,20 @@
-package eu.cj4.declarativeui.api.container.provider;
+package eu.cj4.declarativeui.api.container;
 
+import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.impl.container.DeclaredContainer;
 import eu.cj4.declarativeui.impl.container.provider.ContainerEntityProvider;
 import eu.cj4.declarativeui.impl.container.provider.EnderChestProvider;
 import eu.cj4.declarativeui.impl.container.provider.PlayerContainerProvider;
 import eu.cj4.declarativeui.impl.container.provider.PlayerInventoryProvider;
+import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 
 public interface ContainerProvider {
-    ContainerProviderType getType();
+    MapCodec<? extends ContainerProvider> codec();
 
     Container getContainer(Entity entity);
 
@@ -28,5 +32,9 @@ public interface ContainerProvider {
 
     static PlayerInventoryProvider playerInventory() {
         return PlayerInventoryProvider.INSTANCE;
+    }
+
+    static <T extends ContainerProvider> MapCodec<T> register(Identifier id, MapCodec<T> mapCodec) {
+        return Registry.register(DeclarativeUIBuiltInRegistries.CONTAINER_PROVIDER_TYPE, id, mapCodec);
     }
 }

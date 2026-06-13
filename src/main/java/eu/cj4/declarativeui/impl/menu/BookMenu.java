@@ -3,7 +3,6 @@ package eu.cj4.declarativeui.impl.menu;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.MenuType;
 import eu.pb4.sgui.api.gui.BookGui;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.RegistryAccess;
@@ -21,7 +20,7 @@ import net.minecraft.world.item.component.WrittenBookContent;
 import java.util.*;
 
 public record BookMenu(List<Component> pages) implements Menu {
-    public static final MapCodec<BookMenu> CODEC = WrittenBookContent.CONTENT_CODEC.sizeLimitedListOf(100).fieldOf("pages").xmap(
+    public static final MapCodec<BookMenu> MAP_CODEC = WrittenBookContent.CONTENT_CODEC.sizeLimitedListOf(100).fieldOf("pages").xmap(
             BookMenu::new,
             BookMenu::pages
     );
@@ -35,8 +34,8 @@ public record BookMenu(List<Component> pages) implements Menu {
     }
 
     @Override
-    public MenuType getType() {
-        return MenuTypes.BOOK;
+    public MapCodec<BookMenu> codec() {
+        return MAP_CODEC;
     }
 
     @Override

@@ -2,31 +2,23 @@ package eu.cj4.declarativeui.impl.menu.slot.provider;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.cj4.declarativeui.impl.DeclarativeUI;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 
 public final class SlotProviders {
-    public static final Codec<SlotProvider> TYPED_CODEC;
-    public static final SlotProviderType SIMPLE;
-    public static final SlotProviderType TAG;
-    public static final SlotProviderType ANIMATED;
-    public static final SlotProviderType EMPTY;
+    public static final Codec<SlotProvider> TYPED_CODEC = DeclarativeUIBuiltInRegistries.SLOT_PROVIDER_TYPE.byNameCodec().dispatch(SlotProvider::codec, c -> c);
 
-    private static SlotProviderType register(String name, MapCodec<? extends SlotProvider> mapCodec) {
-        return SlotProviderType.register(Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
+    private static void register(String name, MapCodec<? extends SlotProvider> mapCodec) {
+        Registry.register(DeclarativeUIBuiltInRegistries.SLOT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath(DeclarativeUI.MOD_ID, name), mapCodec);
     }
 
     public static void bootStrap() {
-    }
-
-    static {
-        TYPED_CODEC = DeclarativeUIBuiltInRegistries.SLOT_PROVIDER_TYPE.byNameCodec().dispatch(SlotProvider::getType, SlotProviderType::codec);
-        SIMPLE = register("simple", SimpleProvider.CODEC);
-        TAG = register("tag", TagProvider.CODEC);
-        ANIMATED = register("animated", AnimatedProvider.CODEC);
-        EMPTY = register("empty", EmptyProvider.CODEC);
+        register("simple", SimpleProvider.MAP_CODEC);
+        register("tag", TagProvider.MAP_CODEC);
+        register("animated", AnimatedProvider.MAP_CODEC);
+        register("empty", EmptyProvider.MAP_CODEC);
     }
 }

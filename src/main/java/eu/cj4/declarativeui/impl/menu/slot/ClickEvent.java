@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.codec.LazyEnumCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.action.ClickActionTypes;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.gui.SlotBasedGui;
@@ -28,9 +28,9 @@ public record ClickEvent(List<ClickAction> actions, Optional<ClickType> clickTyp
             ).apply(instance, ClickEvent::new));
     public static final Codec<List<ClickEvent>> LIST_CODEC = Codec.withAlternative(Codec.list(CODEC), CODEC, Collections::singletonList);
 
-    public void click(Menu menu, SlotBasedGui slotBasedGui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
+    public void click(Menu menu, SlotBasedGui gui, @Nullable CompoundTag compoundTag) throws CommandSyntaxException {
         for (ClickAction clickAction : this.actions) {
-            clickAction.click(menu, slotBasedGui, compoundTag);
+            clickAction.click(menu, gui, compoundTag);
         }
     }
 }

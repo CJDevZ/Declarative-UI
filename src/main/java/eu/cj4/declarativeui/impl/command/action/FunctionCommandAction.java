@@ -5,8 +5,7 @@ import com.mojang.brigadier.context.ContextChain;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
-import eu.cj4.declarativeui.api.command.action.CommandAction;
-import eu.cj4.declarativeui.api.command.action.CommandActionType;
+import eu.cj4.declarativeui.api.command.CommandAction;
 import eu.cj4.declarativeui.mixin.CommandContextAccessor;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.execution.ChainModifiers;
@@ -23,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandling<CommandSourceStack> implements CustomCommandExecutor.CommandAdapter<CommandSourceStack>, CommandAction {
-    public static final MapCodec<FunctionCommandAction> CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
+    public static final MapCodec<FunctionCommandAction> MAP_CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionCommandAction::new, FunctionCommandAction::function);
 
     private final Identifier function;
 
@@ -32,8 +31,8 @@ public class FunctionCommandAction extends CustomCommandExecutor.WithErrorHandli
     }
 
     @Override
-    public CommandActionType getType() {
-        return CommandActionTypes.FUNCTION;
+    public MapCodec<FunctionCommandAction> codec() {
+        return MAP_CODEC;
     }
 
     public Identifier function() {
