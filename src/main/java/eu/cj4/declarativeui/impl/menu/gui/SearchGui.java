@@ -3,9 +3,9 @@ package eu.cj4.declarativeui.impl.menu.gui;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import eu.cj4.declarativeui.api.menu.Menu;
-import eu.cj4.declarativeui.api.menu.slot.action.ClickAction;
+import eu.cj4.declarativeui.api.menu.slot.Slot;
+import eu.cj4.declarativeui.api.menu.slot.ClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.ClickEvent;
-import eu.cj4.declarativeui.impl.menu.slot.DeclaredSlot;
 import eu.pb4.sgui.api.elements.GuiElement;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -46,10 +46,15 @@ public class SearchGui extends eu.pb4.sgui.api.gui.AnvilInputGui {
     @Override
     public void setDefaultInputValue(String input) {
         super.setDefaultInputValue(input);
-        GuiElement.ClickCallback searchCallback = this.searchActions == null ? GuiElement.EMPTY_CALLBACK : new DeclaredSlot.SlotCallback(this.menu, this.searchActions, this::getSearchTag);
+        GuiElement.ClickCallback searchCallback = this.searchActions == null ? GuiElement.EMPTY_CALLBACK : new Slot.Callback(this.menu, this.searchActions, this::getSearchTag);
         ItemStack searchItem = Items.PAPER.getDefaultInstance();
-        searchItem.set(DataComponents.CUSTOM_NAME, Component.literal("Search..."));
+        searchItem.set(DataComponents.CUSTOM_NAME, Component.literal(""));
         this.setSlot(2, searchItem, searchCallback);
+    }
+
+    @Override
+    public void onInput(String input) {
+        this.getGuiElement(2).getItemStack().set(DataComponents.CUSTOM_NAME, Component.literal(input));
     }
 
     @Override

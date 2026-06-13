@@ -3,8 +3,7 @@ package eu.cj4.declarativeui.impl.menu.slot.provider;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProvider;
-import eu.cj4.declarativeui.api.menu.slot.provider.SlotProviderType;
+import eu.cj4.declarativeui.api.menu.slot.SlotProvider;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.elements.SimpleGuiElement;
 import net.minecraft.commands.CommandSourceStack;
@@ -28,14 +27,14 @@ import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public record SimpleProvider(Optional<ItemStackTemplate> template, Optional<LootItemFunction> itemModifier) implements SlotProvider {
-    public static final MapCodec<SimpleProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<SimpleProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStackTemplate.CODEC.optionalFieldOf("item").forGetter(SimpleProvider::template),
             Codec.withAlternative(LootItemFunctions.ROOT_CODEC, ResourceKey.codec(Registries.ITEM_MODIFIER), resourceKey -> FunctionReference.functionReference(resourceKey).build()).optionalFieldOf("item_modifier").forGetter(SimpleProvider::itemModifier)
     ).apply(instance, SimpleProvider::new));
 
     @Override
-    public SlotProviderType getType() {
-        return SlotProviders.SIMPLE;
+    public MapCodec<SimpleProvider> codec() {
+        return MAP_CODEC;
     }
 
     public static SimpleProvider fromHolder(Holder<Item> holder) {
