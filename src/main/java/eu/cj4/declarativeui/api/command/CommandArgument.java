@@ -1,4 +1,4 @@
-package eu.cj4.declarativeui.api.command.argument;
+package eu.cj4.declarativeui.api.command;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import net.minecraft.commands.CommandBuildContext;

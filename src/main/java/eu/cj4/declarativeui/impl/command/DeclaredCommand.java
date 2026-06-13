@@ -6,9 +6,9 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import eu.cj4.declarativeui.api.command.CommandAction;
-import eu.cj4.declarativeui.api.command.argument.CommandArgument;
-import eu.cj4.declarativeui.api.command.argument.CommandArgumentType;
+import eu.cj4.declarativeui.api.command.CommandArgument;
 import eu.cj4.declarativeui.impl.command.action.CommandActionTypes;
+import eu.cj4.declarativeui.impl.command.argument.CommandArgumentTypes;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -49,7 +49,7 @@ public record DeclaredCommand(Optional<CommandAction> action, Map<String, Node> 
     public record Node(Optional<CommandArgument<?>> argumentType, Optional<CommandAction> action, Map<String, Node> nodes, Optional<PermissionLevel> permissionLevel) {
         public static final Codec<Node> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(instance ->
                 instance.group(
-                        CommandArgumentType.TYPED_CODEC.optionalFieldOf("argument").forGetter(Node::argumentType),
+                        CommandArgumentTypes.TYPED_CODEC.optionalFieldOf("argument").forGetter(Node::argumentType),
                         CommandActionTypes.TYPED_CODEC.optionalFieldOf("action").forGetter(Node::action),
                         Codec.unboundedMap(Codec.STRING, Node.CODEC).optionalFieldOf("nodes", Collections.emptyMap()).forGetter(Node::nodes),
                         Codec.withAlternative(PermissionLevel.CODEC, PermissionLevel.INT_CODEC).optionalFieldOf("permission_level").forGetter(Node::permissionLevel)
