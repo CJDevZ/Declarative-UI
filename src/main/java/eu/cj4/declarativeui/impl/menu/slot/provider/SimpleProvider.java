@@ -26,7 +26,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public record SimpleProvider(ItemStack item, Optional<LootItemFunction> itemModifier) implements SlotProvider {
-    public static final MapCodec<SimpleProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<SimpleProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.withAlternative(ItemStack.STRICT_CODEC, Item.CODEC, ItemStack::new).optionalFieldOf("item", ItemStack.EMPTY).forGetter(SimpleProvider::item),
             Codec.withAlternative(LootItemFunctions.ROOT_CODEC, ResourceKey.codec(Registries.ITEM_MODIFIER), resourceKey -> FunctionReference.functionReference(resourceKey).build()).optionalFieldOf("item_modifier").forGetter(SimpleProvider::itemModifier)
     ).apply(instance, SimpleProvider::new));

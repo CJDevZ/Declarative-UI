@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 
 public record ContainerEntityProvider() implements ContainerProvider {
     public static final ContainerEntityProvider INSTANCE = new ContainerEntityProvider();
-    public static final MapCodec<ContainerEntityProvider> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<ContainerEntityProvider> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public ContainerProviderType getType() {

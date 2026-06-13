@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Collections;
 
 public record OpenMenuClickAction(ResourceKey<Menu> menu) implements ClickAction {
-    public static final MapCodec<OpenMenuClickAction> CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU).fieldOf("menu").xmap(OpenMenuClickAction::new, OpenMenuClickAction::menu);
+    public static final MapCodec<OpenMenuClickAction> MAP_CODEC = ResourceKey.codec(DeclarativeUIRegistries.MENU).fieldOf("menu").xmap(OpenMenuClickAction::new, OpenMenuClickAction::menu);
 
     @Override
     public ClickActionType getType() {

@@ -22,8 +22,8 @@ public final class MenuTypes {
     }
 
     static {
-        SIMPLE = register("simple", SimpleMenu.CODEC);
-        SEARCH = register("search", SearchMenu.CODEC);
-        BOOK = register("book", BookMenu.CODEC);
+        SIMPLE = register("simple", SimpleMenu.MAP_CODEC);
+        SEARCH = register("search", SearchMenu.MAP_CODEC);
+        BOOK = register("book", BookMenu.MAP_CODEC);
     }
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record TagProvider(TagKey<Item> tag, int interval, boolean random) implements SlotProvider {
-    public static final MapCodec<TagProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<TagProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             TagKey.codec(Registries.ITEM).fieldOf("tag").forGetter(TagProvider::tag),
             Codec.INT.fieldOf("interval").forGetter(TagProvider::interval),
             Codec.BOOL.optionalFieldOf("random", false).forGetter(TagProvider::random)

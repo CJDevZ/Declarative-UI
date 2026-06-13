@@ -1,3 +1,4 @@
 accessWidener v2 named
 accessible class net/minecraft/server/commands/FunctionCommand$FunctionCustomExecutor
 accessible method net/minecraft/server/commands/FunctionCommand$FunctionCustomExecutor <init> ()V
+accessible class net/minecraft/server/commands/ExecuteCommand$CommandNumericPredicate

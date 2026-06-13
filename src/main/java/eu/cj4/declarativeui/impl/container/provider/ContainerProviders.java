@@ -24,9 +24,9 @@ public final class ContainerProviders {
 
     static {
         TYPED_CODEC = DeclarativeUIBuiltInRegistries.CONTAINER_PROVIDER_TYPE.byNameCodec().dispatch(ContainerProvider::getType, ContainerProviderType::codec);
-        CONTAINER_ENTITY = register("container_entity", ContainerEntityProvider.CODEC);
-        ENDER_CHEST = register("ender_chest", EnderChestProvider.CODEC);
-        PLAYER_CONTAINER = register("player_container", PlayerContainerProvider.CODEC);
-        PLAYER_INVENTORY = register("player_inventory", PlayerInventoryProvider.CODEC);
+        CONTAINER_ENTITY = register("container_entity", ContainerEntityProvider.MAP_CODEC);
+        ENDER_CHEST = register("ender_chest", EnderChestProvider.MAP_CODEC);
+        PLAYER_CONTAINER = register("player_container", PlayerContainerProvider.MAP_CODEC);
+        PLAYER_INVENTORY = register("player_inventory", PlayerInventoryProvider.MAP_CODEC);
     }
 }

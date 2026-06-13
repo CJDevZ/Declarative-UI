@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public record EmptyProvider() implements SlotProvider {
     public static final EmptyProvider INSTANCE = new EmptyProvider();
-    public static final MapCodec<EmptyProvider> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<EmptyProvider> MAP_CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public SlotProviderType getType() {

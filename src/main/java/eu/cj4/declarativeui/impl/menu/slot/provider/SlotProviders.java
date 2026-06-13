@@ -24,9 +24,9 @@ public final class SlotProviders {
 
     static {
         TYPED_CODEC = DeclarativeUIBuiltInRegistries.SLOT_PROVIDER_TYPE.byNameCodec().dispatch(SlotProvider::getType, SlotProviderType::codec);
-        SIMPLE = register("simple", SimpleProvider.CODEC);
-        TAG = register("tag", TagProvider.CODEC);
-        ANIMATED = register("animated", AnimatedProvider.CODEC);
-        EMPTY = register("empty", EmptyProvider.CODEC);
+        SIMPLE = register("simple", SimpleProvider.MAP_CODEC);
+        TAG = register("tag", TagProvider.MAP_CODEC);
+        ANIMATED = register("animated", AnimatedProvider.MAP_CODEC);
+        EMPTY = register("empty", EmptyProvider.MAP_CODEC);
     }
 }

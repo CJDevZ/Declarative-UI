@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 public record FunctionClickAction(Identifier function) implements ClickAction {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final MapCodec<FunctionClickAction> CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionClickAction::new, FunctionClickAction::function);
+    public static final MapCodec<FunctionClickAction> MAP_CODEC = Identifier.CODEC.fieldOf("function").xmap(FunctionClickAction::new, FunctionClickAction::function);
 
     @Override
     public ClickActionType getType() {

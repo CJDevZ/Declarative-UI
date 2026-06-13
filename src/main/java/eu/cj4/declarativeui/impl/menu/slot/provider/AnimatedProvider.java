@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public record AnimatedProvider(List<SimpleProvider> providers, int interval, boolean random) implements SlotProvider {
-    public static final MapCodec<AnimatedProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.list(Codec.withAlternative(SimpleProvider.CODEC.codec(), Item.CODEC, SimpleProvider::fromHolder)).fieldOf("providers").forGetter(AnimatedProvider::providers),
+    public static final MapCodec<AnimatedProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.list(Codec.withAlternative(SimpleProvider.MAP_CODEC.codec(), Item.CODEC, SimpleProvider::fromHolder)).fieldOf("providers").forGetter(AnimatedProvider::providers),
             Codec.INT.fieldOf("interval").forGetter(AnimatedProvider::interval),
             Codec.BOOL.optionalFieldOf("random", false).forGetter(AnimatedProvider::random)
     ).apply(instance, AnimatedProvider::new));
