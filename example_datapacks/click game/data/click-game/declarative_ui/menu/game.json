@@ -12,6 +12,7 @@
   "menu_type": "minecraft:generic_9x3",
   "slots": [
     {
+      "type": "declarative_ui:simple",
       "slot": {
         "type": "minecraft:uniform",
         "min": 0,

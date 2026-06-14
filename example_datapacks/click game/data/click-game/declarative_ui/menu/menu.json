@@ -4,6 +4,7 @@
   "menu_type": "minecraft:generic_9x3",
   "slots": [
     {
+      "type": "declarative_ui:simple",
       "slot": 11,
       "provider": {
         "type": "declarative_ui:simple",
@@ -25,6 +26,7 @@
       }
     },
     {
+      "type": "declarative_ui:simple",
       "slot": 13,
       "provider": {
         "type": "declarative_ui:simple",
@@ -46,6 +48,7 @@
       }
     },
     {
+      "type": "declarative_ui:simple",
       "slot": 15,
       "provider": {
         "type": "declarative_ui:simple",
