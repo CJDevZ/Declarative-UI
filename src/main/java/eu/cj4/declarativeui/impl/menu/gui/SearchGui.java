@@ -31,8 +31,8 @@ public class SearchGui extends eu.pb4.sgui.api.gui.AnvilInputGui {
      * Constructs a new input gui for the provided player.
      *
      * @param player                the player to serve this gui to
-     * @param manipulatePlayerSlots if <code>true</code> the players inventory
-     *                              will be treated as slots of this gui
+     * @param closeActions          the actions which will run when this gui is closed
+     *
      */
     public SearchGui(ServerPlayer player, boolean manipulatePlayerSlots, @NonNull Menu menu, String searchTag, @Nullable List<ClickEvent> searchActions, @Nullable List<ClickAction> closeActions) {
         super(player, manipulatePlayerSlots);
