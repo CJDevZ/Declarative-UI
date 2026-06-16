@@ -4,7 +4,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.menu.slot.action.*;
+import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -36,5 +38,9 @@ public interface ClickAction {
 
     static RefreshMenuTitleClickAction refreshMenuTitle() {
         return RefreshMenuTitleClickAction.INSTANCE;
+    }
+
+    static <T extends ClickAction> MapCodec<T> register(Identifier id, MapCodec<T> mapCodec) {
+        return Registry.register(DeclarativeUIBuiltInRegistries.CLICK_ACTION_TYPE, id, mapCodec);
     }
 }

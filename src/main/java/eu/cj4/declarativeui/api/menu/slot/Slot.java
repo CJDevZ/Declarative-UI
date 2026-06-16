@@ -6,11 +6,14 @@ import com.mojang.serialization.MapCodec;
 import eu.cj4.declarativeui.api.container.ContainerProvider;
 import eu.cj4.declarativeui.api.menu.Menu;
 import eu.cj4.declarativeui.impl.menu.slot.*;
+import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
@@ -37,6 +40,10 @@ public interface Slot {
 
     static FillSlots fill(InclusiveRange<Integer> range, SlotProvider provider, List<ClickEvent> clickEvents) {
         return new FillSlots(range, provider, clickEvents);
+    }
+
+    static <T extends Slot> MapCodec<T> register(Identifier id, MapCodec<T> mapCodec) {
+        return Registry.register(DeclarativeUIBuiltInRegistries.SLOT_TYPE, id, mapCodec);
     }
 
     record Callback(@NonNull Menu declaredMenu, @NonNull List<ClickEvent> clickEvents, @Nullable Supplier<CompoundTag> compoundTagFunction) implements GuiElementInterface.ClickCallback {

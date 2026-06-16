@@ -19,5 +19,6 @@ public final class MenuTypes {
         register("simple", SimpleMenu.MAP_CODEC);
         register("search", SearchMenu.MAP_CODEC);
         register("book", BookMenu.MAP_CODEC);
+        register("hotbar", HotbarMenu.MAP_CODEC);
     }
 }

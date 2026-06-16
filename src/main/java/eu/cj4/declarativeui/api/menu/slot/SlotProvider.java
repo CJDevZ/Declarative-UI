@@ -5,8 +5,11 @@ import eu.cj4.declarativeui.impl.menu.slot.provider.AnimatedProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.EmptyProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.SimpleProvider;
 import eu.cj4.declarativeui.impl.menu.slot.provider.TagProvider;
+import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,5 +42,9 @@ public interface SlotProvider {
 
     static @NonNull AnimatedProvider animated(List<SimpleProvider> stack, int interval, boolean random) {
         return new AnimatedProvider(stack, interval, random);
+    }
+
+    static <T extends SlotProvider> MapCodec<T> register(Identifier id, MapCodec<T> mapCodec) {
+        return Registry.register(DeclarativeUIBuiltInRegistries.SLOT_PROVIDER_TYPE, id, mapCodec);
     }
 }
