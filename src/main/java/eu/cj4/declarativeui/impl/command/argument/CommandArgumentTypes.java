@@ -90,7 +90,7 @@ public final class CommandArgumentTypes {
         registerContextAware(BlockPredicateArgument.class, BlockPredicateArgument::new);
         registerContextAware(ItemArgument.class, ItemArgument::new);
         registerContextAware(ItemPredicateArgument.class, ItemPredicateArgument::new);
-        registerStable(ColorArgument.class, ColorArgument.color());
+        registerStable(TeamColorArgument.class, TeamColorArgument.teamColor());
         registerStable(HexColorArgument.class, HexColorArgument.hexColor());
         registerContextAware(ComponentArgument.class, ComponentArgument::textComponent);
         registerContextAware(StyleArgument.class, StyleArgument::style);
