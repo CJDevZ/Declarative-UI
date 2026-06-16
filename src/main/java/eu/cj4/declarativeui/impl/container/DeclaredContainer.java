@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import eu.cj4.declarativeui.api.container.NamespacedContainerHolder;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
 import eu.cj4.declarativeui.mixin.ResourceKeyArgumentAccessor;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.RangeArgument;
