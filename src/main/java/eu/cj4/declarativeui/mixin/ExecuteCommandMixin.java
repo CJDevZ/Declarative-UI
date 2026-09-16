@@ -39,20 +39,21 @@ public class ExecuteCommandMixin {
     @WrapOperation(method = "addConditionals", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;then(Lcom/mojang/brigadier/builder/ArgumentBuilder;)Lcom/mojang/brigadier/builder/ArgumentBuilder;"))
     private static ArgumentBuilder<CommandSourceStack, ?> addContainerCondition(LiteralArgumentBuilder<CommandSourceStack> instance, ArgumentBuilder<CommandSourceStack, ?> argumentBuilder, Operation<ArgumentBuilder<CommandSourceStack, ?>> original, @Local(argsOnly = true) CommandNode<CommandSourceStack> commandNode, @Local(argsOnly = true) CommandBuildContext commandBuildContext, @Local(argsOnly = true) boolean bl) {
         if (!instance.getLiteral().equals("items")) {
-            original.call(instance, argumentBuilder);
+            return original.call(instance, argumentBuilder);
+        } else {
+            return original.call(instance, argumentBuilder)
+                    .then(Commands.literal("container")
+                            .then(Commands.argument("player", EntityArgument.player())
+                                    .then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER))
+                                            .then(Commands.argument("range", RangeArgument.intRange())
+                                                    .then(Commands.argument("item_predicate", ItemPredicateArgument.itemPredicate(commandBuildContext))
+                                                            .fork(commandNode, context -> expect(context, bl, DeclaredContainer.countItems(context) > 0))
+                                                            .executes(createNumericConditionalHandler(bl, DeclaredContainer::countItems))
+                                                    )
+                                            )
+                                    )
+                            )
+                    );
         }
-        return original.call(instance, argumentBuilder)
-                .then(Commands.literal("container")
-                        .then(Commands.argument("player", EntityArgument.player())
-                                .then(Commands.argument("container", ResourceKeyArgument.key(DeclarativeUIRegistries.CONTAINER))
-                                        .then(Commands.argument("range", RangeArgument.intRange())
-                                                .then(Commands.argument("item_predicate", ItemPredicateArgument.itemPredicate(commandBuildContext))
-                                                        .fork(commandNode, context -> expect(context, bl, DeclaredContainer.countItems(context) > 0))
-                                                        .executes(createNumericConditionalHandler(bl, DeclaredContainer::countItems))
-                                                )
-                                        )
-                                )
-                        )
-                );
     }
 }
