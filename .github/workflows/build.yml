@@ -18,14 +18,13 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '25'
-          distribution: 'temurin'
+          distribution: 'microsoft'
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
       - name: capture build artifacts
-        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Artifacts
           path: build/libs/
-          retention-days: 7
