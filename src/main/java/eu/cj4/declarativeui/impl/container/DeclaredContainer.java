@@ -6,11 +6,11 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.serialization.Codec;
 import eu.cj4.declarativeui.api.container.NamespacedContainerHolder;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIRegistries;
-import eu.cj4.declarativeui.mixin.ResourceKeyArgumentAccessor;
 import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.RangeArgument;
+import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.commands.arguments.item.ItemPredicateArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -29,7 +29,7 @@ public record DeclaredContainer(int size) {
 
     public static int countItems(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         ServerPlayer serverPlayer = EntityArgument.getPlayer(commandContext, "player");
-        Identifier containerId = ResourceKeyArgumentAccessor.callResolveKey(commandContext, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).key().identifier();
+        Identifier containerId = ResourceKeyArgument.getRegistryKey(commandContext, "container", DeclarativeUIRegistries.CONTAINER, ERROR_INVALID_CONTAINER).identifier();
         Container container = NamespacedContainerHolder.of(serverPlayer).declarative_ui$namespacedContainer(containerId);
         if (container == null) {
             return 0;

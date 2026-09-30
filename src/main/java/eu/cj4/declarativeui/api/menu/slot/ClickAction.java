@@ -9,6 +9,7 @@ import eu.cj4.declarativeui.impl.menu.slot.action.OpenMenuClickAction;
 import eu.cj4.declarativeui.impl.menu.slot.action.RefreshMenuClickAction;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.gui.SlotBasedGui;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -27,7 +28,7 @@ public interface ClickAction {
         return new FunctionClickAction(functionId);
     }
 
-    static OpenMenuClickAction openMenu(ResourceKey<Menu> menu) {
+    static OpenMenuClickAction openMenu(Holder<Menu> menu) {
         return new OpenMenuClickAction(menu);
     }
 

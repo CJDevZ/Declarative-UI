@@ -9,10 +9,11 @@ import eu.cj4.declarativeui.impl.menu.slot.provider.SlotProviders;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -21,10 +22,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /// TODO: Add Click Type Predicates and Saved/maybe Temporary Inventories
-public record SimpleSlot(NumberProvider slot, SlotProvider provider, List<ClickEvent> clickEvents) implements Slot {
+public record SimpleSlot(Holder<ContextIntProvider> slot, SlotProvider provider, List<ClickEvent> clickEvents) implements Slot {
     public static final MapCodec<SimpleSlot> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    NumberProviders.CODEC.fieldOf("slot").forGetter(SimpleSlot::slot),
+                    ContextIntProviders.CODEC.fieldOf("slot").forGetter(SimpleSlot::slot),
                     SlotProviders.TYPED_CODEC.fieldOf("provider").forGetter(SimpleSlot::provider),
                     ClickEvent.LIST_CODEC.optionalFieldOf("click_event", Collections.emptyList()).forGetter(SimpleSlot::clickEvents)
             ).apply(instance, SimpleSlot::new));
@@ -49,7 +50,7 @@ public record SimpleSlot(NumberProvider slot, SlotProvider provider, List<ClickE
     @Override
     public void build(Menu menu, CommandSourceStack sourceStack, SlotBasedGui gui, LootContext lootContext) {
         int size = gui.getSize();
-        int slot = this.slot.getInt(lootContext);
+        int slot = this.slot.value().getInt(lootContext);
         if (size >= 0 && slot < size) {
             gui.setSlot(slot, this.createElement(sourceStack, this.clickCallback(menu)));
         }

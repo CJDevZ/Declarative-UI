@@ -27,12 +27,12 @@ import java.util.Collection;
 @Mixin(ExecuteCommand.class)
 public class ExecuteCommandMixin {
     @Shadow
-    private static Collection<CommandSourceStack> expect(CommandContext<CommandSourceStack> commandContext, boolean bl, boolean bl2) {
+    private static Collection<CommandSourceStack> expect(CommandContext<CommandSourceStack> context, boolean expected, boolean result) {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
 
     @Shadow
-    private static Command<CommandSourceStack> createNumericConditionalHandler(boolean bl, ExecuteCommand.CommandNumericPredicate commandNumericPredicate) {
+    private static Command<CommandSourceStack> createNumericConditionalHandler(boolean expected, ExecuteCommand.CommandNumericPredicate condition) {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
 

@@ -31,9 +31,9 @@ public class DeclarativeUI implements ModInitializer {
     @Override
     public void onInitialize() {
         DeclarativeUIBuiltInRegistries.bootStrap();
-        DynamicRegistries.register(DeclarativeUIRegistries.MENU, MenuTypes.TYPED_CODEC);
         DynamicRegistries.register(DeclarativeUIRegistries.CONTAINER, DeclaredContainer.CODEC);
-        DynamicRegistries.register(DeclarativeUIRegistries.COMMAND, DeclaredCommand.CODEC);
+        DynamicRegistries.registerReloadable(DeclarativeUIRegistries.MENU, MenuTypes.TYPED_CODEC);
+        DynamicRegistries.registerReloadable(DeclarativeUIRegistries.COMMAND, DeclaredCommand.CODEC);
         DynamicRegistries.register(DeclarativeUIRegistries.CUSTOM_CLICK_ACTION, DeclaredCustomClickAction.CODEC);
 
         SlotProviders.bootStrap();
@@ -46,7 +46,7 @@ public class DeclarativeUI implements ModInitializer {
         ContainerSlotSource.bootStrap();
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> {
-            DeclarativeUICommand.register(dispatcher);
+            new DeclarativeUICommand(buildContext).register(dispatcher);
             ItemCommands.register(dispatcher, buildContext);
 
             Set<String> knownCommands = dispatcher.getRoot().getChildren().stream().map(CommandNode::getName).collect(Collectors.toSet());

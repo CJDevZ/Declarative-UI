@@ -38,7 +38,7 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void initContainers(MinecraftServer minecraftServer, ServerLevel serverLevel, GameProfile gameProfile, ClientInformation clientInformation, CallbackInfo ci) {
+    private void initContainers(MinecraftServer server, ServerLevel level, GameProfile gameProfile, ClientInformation clientInformation, CallbackInfo ci) {
         declarative_ui$containers = new HashMap<>();
     }
 
@@ -53,8 +53,8 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void loadContainers(ValueInput valueInput, CallbackInfo ci) {
-        ValueInput containers = valueInput.childOrEmpty("declarative_ui_containers");
+    private void loadContainers(ValueInput input, CallbackInfo ci) {
+        ValueInput containers = input.childOrEmpty("declarative_ui_containers");
         Registry<DeclaredContainer> containerRegistry = this.registryAccess().lookupOrThrow(DeclarativeUIRegistries.CONTAINER);
         for (Map.Entry<ResourceKey<DeclaredContainer>, DeclaredContainer> entry : containerRegistry.entrySet()) {
             Optional<ValueInput.TypedInputList<ItemStackWithSlot>> slots = containers.list(entry.getKey().identifier().toString(), ItemStackWithSlot.CODEC);
@@ -66,8 +66,8 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void saveContainers(ValueOutput valueOutput, CallbackInfo ci) {
-        ValueOutput containers = valueOutput.child("declarative_ui_containers");
+    private void saveContainers(ValueOutput output, CallbackInfo ci) {
+        ValueOutput containers = output.child("declarative_ui_containers");
         for (Map.Entry<Identifier, PlayerContainer> entry : declarative_ui$containers.entrySet()) {
             PlayerContainer playerContainer = entry.getValue();
             if (playerContainer.isEmpty()) continue;
@@ -76,7 +76,7 @@ public abstract class ServerPlayerMixin extends Player implements NamespacedCont
     }
 
     @Inject(method = "restoreFrom", at = @At("TAIL"))
-    private void restoreContainers(ServerPlayer serverPlayer, boolean alive, CallbackInfo ci) {
-        declarative_ui$containers = new HashMap<>(((ServerPlayerMixin) (Object) serverPlayer).declarative_ui$containers);
+    private void restoreContainers(ServerPlayer oldPlayer, boolean restoreAll, CallbackInfo ci) {
+        declarative_ui$containers = ((ServerPlayerMixin) (Object) oldPlayer).declarative_ui$containers;
     }
 }

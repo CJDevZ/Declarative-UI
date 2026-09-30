@@ -120,12 +120,12 @@ public final class CommandArgumentTypes {
         registerCodec1(TimeArgument.class, TimeArgument::time, Codec.INT.optionalFieldOf("min", 0));
 
         ResourceKey<? extends Registry<Registry<Object>>> rootRegistry = ResourceKey.createRegistryKey(Registries.ROOT_REGISTRY_NAME);
-        Codec<ResourceKey<Registry<Object>>> resourceKeyCodec = ResourceKey.codec(rootRegistry);
-        registerCodec1((Class) ResourceOrTagArgument.class, (buildContext, resourceKey) -> ResourceOrTagArgument.resourceOrTag(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
-        registerCodec1((Class) ResourceOrTagKeyArgument.class, resourceKey -> ResourceOrTagKeyArgument.resourceOrTagKey(resourceKey), resourceKeyCodec.fieldOf("registry"));
-        registerCodec1((Class) ResourceArgument.class, (buildContext, resourceKey) -> ResourceArgument.resource(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
-        registerCodec1((Class) ResourceKeyArgument.class, resourceKey -> ResourceKeyArgument.key(resourceKey), resourceKeyCodec.fieldOf("registry"));
-        registerCodec1((Class) ResourceSelectorArgument.class, (buildContext, resourceKey) -> ResourceSelectorArgument.resourceSelector(buildContext, resourceKey), resourceKeyCodec.fieldOf("registry"));
+        MapCodec<ResourceKey<Registry<Object>>> registryField = ResourceKey.codec(rootRegistry).fieldOf("registry");
+        registerCodec1((Class) ResourceOrTagArgument.class, (buildContext, resourceKey) -> ResourceOrTagArgument.resourceOrTag(buildContext, resourceKey), registryField);
+        registerCodec1((Class) ResourceOrTagKeyArgument.class, resourceKey -> ResourceOrTagKeyArgument.resourceOrTagKey(resourceKey), registryField);
+        registerCodec1((Class) ResourceArgument.class, (buildContext, resourceKey) -> ResourceArgument.resource(buildContext, resourceKey), registryField);
+        registerCodec1((Class) ResourceKeyArgument.class, resourceKey -> ResourceKeyArgument.key(resourceKey), registryField);
+        registerCodec1((Class) ResourceSelectorArgument.class, (buildContext, resourceKey) -> ResourceSelectorArgument.resourceSelector(buildContext, resourceKey), registryField);
 
         registerStable(TemplateMirrorArgument.class, TemplateMirrorArgument.templateMirror());
         registerStable(TemplateRotationArgument.class, TemplateRotationArgument.templateRotation());
@@ -133,7 +133,12 @@ public final class CommandArgumentTypes {
         registerContextAware(ResourceOrIdArgument.LootTableArgument.class, ResourceOrIdArgument::lootTable);
         registerContextAware(ResourceOrIdArgument.LootPredicateArgument.class, ResourceOrIdArgument::lootPredicate);
         registerContextAware(ResourceOrIdArgument.LootModifierArgument.class, ResourceOrIdArgument::lootModifier);
+        registerContextAware(ResourceOrIdArgument.ContextFloatProviderArgument.class, ResourceOrIdArgument::floatProvider);
+        registerContextAware(ResourceOrIdArgument.ContextIntProviderArgument.class, ResourceOrIdArgument::intProvider);
+        registerContextAware(SlotSourceArgument.class, SlotSourceArgument::slotSource);
         registerContextAware(ResourceOrIdArgument.DialogArgument.class, ResourceOrIdArgument::dialog);
+        registerContextAware(ResourceOrIdArgument.FeatureArgument.class, ResourceOrIdArgument::feature);
+        registerStable(SwingAnimationArgument.class, SwingAnimationArgument.swingAnimationType());
         registerStable(UuidArgument.class, UuidArgument.uuid());
         //ArgumentTypeInfos
     }

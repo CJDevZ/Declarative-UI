@@ -8,6 +8,7 @@ import eu.cj4.declarativeui.impl.menu.slot.provider.TagProvider;
 import eu.cj4.declarativeui.impl.registry.DeclarativeUIBuiltInRegistries;
 import eu.pb4.sgui.api.elements.GuiElement;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -34,7 +35,7 @@ public interface SlotProvider {
     }
 
     static @NonNull SimpleProvider simple(@Nullable ItemStackTemplate template, LootItemFunction lootItemFunction) {
-        return new SimpleProvider(Optional.ofNullable(template), Optional.of(lootItemFunction));
+        return new SimpleProvider(Optional.ofNullable(template), Optional.of(Holder.direct(lootItemFunction)));
     }
 
     static @NonNull TagProvider tag(TagKey<Item> tag, int interval, boolean random) {

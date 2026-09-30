@@ -11,13 +11,14 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElement;
 import eu.pb4.sgui.api.gui.SlotBasedGui;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public interface Slot {
 
     void build(Menu menu, CommandSourceStack sourceStack, SlotBasedGui gui, LootContext lootContext);
 
-    static SimpleSlot simple(NumberProvider slot, SlotProvider provider, List<ClickEvent> clickEvents) {
+    static SimpleSlot simple(Holder<ContextIntProvider> slot, SlotProvider provider, List<ClickEvent> clickEvents) {
         return new SimpleSlot(slot, provider, clickEvents);
     }
 

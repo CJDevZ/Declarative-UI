@@ -6,8 +6,6 @@
   "mixins": [
     "CommandContextAccessor",
     "ExecuteCommandMixin",
-    "ItemCommandsAccessor",
-    "ResourceKeyArgumentAccessor",
     "ServerCommonPacketListenerImplMixin",
     "ServerPlayerMixin",
     "argument.ArgumentTypeInfosAccessor",
